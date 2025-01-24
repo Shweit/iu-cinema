@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+  
+<hibernate-configuration>
+    <session-factory>
+<!--        <property name="hibernate.hbm2ddl.auto">create</property> -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">cinema</property>
+        <property name="hibernate.connection.password">iu-cinema</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cinema?allowPublicKeyRetrieval=true&amp;useSSL=false</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">false</property>
+        <!--<mapping resource = "Book.hbm.xml"/>-->
+        <!--<mapping resource = "Student.hbm.xml"/>-->
+        <!--<mapping resource = "Address.hbm.xml"/>-->
+
+        <mapping class="de.flix29.CinemaBookingSystem.model.CinemaEntity" />
+        <mapping class="de.flix29.CinemaBookingSystem.model.MovieEntity" />
+        <mapping class="de.flix29.CinemaBookingSystem.model.PersonEntity" />
+        <mapping class="de.flix29.CinemaBookingSystem.model.TicketEntity" />
+    </session-factory>
+</hibernate-configuration>
