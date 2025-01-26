@@ -2,12 +2,12 @@
 function getBookingInfo() {
     const bookingData = localStorage.getItem('bookingData');
     if (!bookingData) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return null;
     }
     const parsedData = JSON.parse(bookingData);
     if (!parsedData || !parsedData.movie || !parsedData.seats || !parsedData.totalPrice) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return null;
     }
     return parsedData;
@@ -18,7 +18,7 @@ function initializeBookingInfo() {
     const bookingInfo = getBookingInfo();
     
     if (!bookingInfo || !bookingInfo.movie || !bookingInfo.seats || !bookingInfo.totalPrice) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return;
     }
     
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     alert('Buchungsdaten nicht gefunden. Bitte beginnen Sie den Buchungsprozess erneut.');
-                    window.location.href = 'index.html';
+                    window.location.href = 'index.xhtml';
                 }
             }, 1500);
         }

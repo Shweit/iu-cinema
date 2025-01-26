@@ -2,12 +2,12 @@
 function getBookingInfo() {
     const bookingData = localStorage.getItem('bookingData');
     if (!bookingData) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return null;
     }
     const parsedData = JSON.parse(bookingData);
     if (!parsedData || !parsedData.movie || !parsedData.seats || !parsedData.totalPrice) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return null;
     }
     return parsedData;
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add navigation buttons
             const navigationButtons = `
                 <div class="d-flex justify-content-center mt-4 mb-5">
-                    <a href="index.html" class="btn btn-danger btn-lg">
+                    <a href="../index.xhtml" class="btn btn-danger btn-lg">
                         <i class="bi bi-house-door-fill me-2"></i>Zurück zur Startseite
                     </a>
                 </div>
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error generating tickets:', error);
             virtualTicketsContainer.innerHTML = '<div class="alert alert-danger">Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</div>';
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'index.xhtml';
             }, 3000);
         }
     }, 1000);

@@ -2,7 +2,7 @@
 function getMovieInfo() {
     const movieData = localStorage.getItem('selectedMovie');
     if (!movieData) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.xhtml';
         return {};
     }
     return JSON.parse(movieData);

@@ -1,4 +1,4 @@
-package de.flix29;
+package com.shweit;
 
 import lombok.Getter;
 import org.hibernate.SessionFactory;
