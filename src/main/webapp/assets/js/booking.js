@@ -35,8 +35,12 @@ function initializeTicketQuantity() {
 // Generate seats grid with row numbers
 function generateSeats() {
     const container = document.getElementById('seatsContainer');
-    const rows = 6;
-    const seatsPerRow = 10;
+
+    const seatPlacement = document.getElementById('hall:seatPlacement').value;
+    const dict = JSON.parse(seatPlacement);
+    const rows = dict['rows']
+    const seatsPerRow = dict['columns']
+
     // Generate seats
     for (let row = 0; row < rows; row++) {
         const rowDiv = document.createElement('div');
@@ -154,49 +158,48 @@ function updateSelectedSeats() {
     }
 }
 
+function fillAlreadyBookedSeats() {
+    const bookedSeatsSelect = document.getElementById('showtime');
 
-// Load seats based on selected showtime
-function loadSeatsForShowtime() {
-    const showtimeSelect = document.getElementById('showtime');
-    const showtimeId = showtimeSelect.value;
-    
-    if (!showtimeId) return;
-
-    // Clear existing seat selection
-    const selectedSeats = document.querySelectorAll('.seat.selected');
-    selectedSeats.forEach(seat => seat.classList.remove('selected'));
-    
-    // Reset all seats to available
-    document.querySelectorAll('.seat').forEach(seat => {
-        seat.classList.remove('occupied');
-        seat.classList.add('available');
-    });
-
-    // Fetch occupied seats from API
-    fetch(`/api/bookings/showtime/${showtimeId}/seats`)
-        .then(response => response.json())
-        .then(occupiedSeats => {
-            // Update seat status
-            occupiedSeats.forEach(seatInfo => {
-                const seatNumber = (seatInfo.row - 1) * 10 + seatInfo.seat;
-                const seatElement = document.querySelector(`[data-seat-number="${seatNumber}"]`);
-                if (seatElement) {
-                    seatElement.classList.remove('available');
-                    seatElement.classList.add('occupied');
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching occupied seats:', error);
+    bookedSeatsSelect.addEventListener('change', () => {
+        // 1. Deselect all booked seats
+        const elems = document.getElementsByClassName('seat occupied');
+        [...elems].forEach(elem => {
+            elem.classList.remove('occupied');
+            elem.classList.add('available')
         });
 
-    updateSelectedSeats();
+        // 2. Set all bookedSeats as occupied
+        // Retrieve the selected option and pull the data-booked-seats attribute
+        const selectedOption = bookedSeatsSelect.options[bookedSeatsSelect.selectedIndex]
+        const bookedSeatsString = selectedOption.getAttribute('data-booked-seats');
+        const bookedSeats = bookedSeatsString.substring(1, bookedSeatsString.length-1).split(", ");
+
+        if (bookedSeats.length !== 0) {
+            bookedSeats.forEach(seat => {
+                const [row, seatNumber] = seat.split(":");
+                const formattedSeatNumber = parseInt(row) * 10 + parseInt(seatNumber) // Example: 03:05 => 35
+
+                const seatElem = document.querySelector(`[data-seat-number="${formattedSeatNumber}"]`)
+
+                if (seatElem) {
+                    seatElem.classList.remove('available')
+                    seatElem.classList.add('occupied')
+                }
+            })
+        }
+    })
+
+    // Manually Trigger Event
+    const initialEvent = new Event("change")
+    bookedSeatsSelect.dispatchEvent(initialEvent);
 }
 
 // Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeTicketQuantity();
     generateSeats();
+    fillAlreadyBookedSeats();
     handleSeatSelection();
     
     // Add booking button click handler

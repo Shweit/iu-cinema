@@ -45,7 +45,7 @@ CREATE TABLE ticket (
     ticketId INT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
-    broadcastTime TIME,
+    showtime VARCHAR(5),
     seatNumber VARCHAR(10) NOT NULL,
     price FLOAT NOT NULL,
     purchaseDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -3,7 +3,6 @@ package com.shweit.cinema.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Time;
 
 @Data
 @Entity
@@ -20,7 +19,7 @@ public class Ticket {
     private String lastName;
 
     @Column(nullable = false)
-    private Time broadcastTime;
+    private String showtime;
 
     @Column(nullable = false)
     private String seatNumber;

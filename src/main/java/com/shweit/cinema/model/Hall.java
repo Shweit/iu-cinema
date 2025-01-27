@@ -23,8 +23,4 @@ public class Hall {
 
     @Column(columnDefinition = "JSON")
     private String seatPlacement;
-
-    @Column(columnDefinition = "JSON")
-    private String bookedSeats;
-
 }

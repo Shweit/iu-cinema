@@ -23,7 +23,7 @@ VALUES
     ('The Dark Knight', 'https://www.movieposters.com/cdn/shop/files/darkknight.building.24x36_20e90057-f673-4cc3-9ce7-7b0d3eeb7d83_480x.progressive.jpg', 'Batman muss sich seinem bisher gefährlichsten Gegner stellen: dem Joker, der Gotham City ins Chaos stürzt. Ein packender Kampf zwischen Ordnung und Anarchie beginnt.', '02:32:00', '2008-07-18', '["Christian Bale", "Heath Ledger"]', 'https://www.youtube.com/watch?v=EXeTwQWrcwY', 'Christopher Nolan', '["Action", "Thriller", "Mysteryfilm", "Superhelden Film"]', 4.5, 3, '["10:00", "13:00", "18:30", "20:15"]', 'Batman kämpft gegen den chaotischen Joker um die Seele von Gotham City.', 11.99);
 
 -- Insert sample data into tickets
-INSERT INTO ticket (firstName, lastName, movieId, hallId, broadcastTime, seatNumber, price, purchaseDate)
+INSERT INTO ticket (firstName, lastName, movieId, hallId, showtime, seatNumber, price, purchaseDate)
 VALUES
     -- Avengers: Endgame (10:00 showing)
     ('John', 'Doe', 1, 1, '10:00', '01:01', 12.99, NOW()),
