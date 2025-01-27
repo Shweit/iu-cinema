@@ -28,14 +28,16 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-3 g-lg-4">
             <ui:repeat var="movie" value="#{movieBean.getAllMovies()}">
                 <div class="col">
-                    <div class="card h-100" data-movie-id="#{movie.getMovieId()}" data-director="#{movie.getDirector()}" data-cast="#{movie.getTopCast().stream().collect(Collectors.joining(', '))}" data-plot="#{movie.getDesc()}" data-rating="#{movie.getRating()}" data-trailer="#{movie.getTrailerURL()}">
-                        <img src="https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg" class="card-img-top" alt="Inception" />
+                    <div class="card h-100" data-movie-id="#{movie.movieId}" data-director="#{movie.director}" data-cast="#{movieBean.getTopCast(movie)}" data-plot="#{movie.desc}" data-rating="#{movie.rating}" data-trailer="#{movie.trailerUrl}">
+                        <img src="#{movie.cover}" class="card-img-top" alt="Inception" />
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">#{movie.getName()}</h5>
-                            <p class="card-text flex-grow-1">#{movie.getShortDesc()}</p>
+                            <p class="card-text flex-grow-1">#{movie.shortDesc}</p>
                             <div class="movie-info">
-                                 <span class="badge bg-info">#{movie.getGenre().stream().collect(Collectors.joining(", "))}</span>
-                                <span class="duration">#{movie.getPlaytime()} Min.</span>
+                                <ui:repeat var="genre" value="#{movieBean.getGenres(movie)}">
+                                    <span class="badge bg-info">#{genre}</span>
+                                </ui:repeat>
+                                <span class="duration">#{movie.playtime} Spielzeit</span>
                             </div>
                         </div>
                         <div class="card-footer d-flex flex-wrap gap-2 justify-content-between">
@@ -45,25 +47,6 @@
                     </div>
                 </div>
             </ui:repeat>
-
-            <!-- Film 3 -->
-            <div class="col">
-                <div class="card h-100" data-movie-id="3" data-director="Christopher Nolan" data-cast="Matthew McConaughey, Anne Hathaway, Jessica Chastain" data-plot="In einer Zukunft, in der die Erde unbewohnbar wird, begibt sich ein Team von Astronauten durch ein Wurmloch auf die Suche nach einem neuen Zuhause für die Menschheit." data-rating="4.8" data-trailer="https://www.youtube.com/watch?v=zSWdZVtXT7E">
-                    <img src="https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" class="card-img-top" alt="Interstellar" />
-                    <div class="card-body">
-                        <h5 class="card-title">Interstellar</h5>
-                        <p class="card-text">Eine Reise durch Raum und Zeit zur Rettung der Menschheit.</p>
-                        <div class="movie-info">
-                            <span class="badge bg-info">Sci-Fi</span>
-                            <span class="duration">169 Min.</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-info me-2" onclick="showMovieDetails(this.closest('.card'))">Mehr Info</button>
-                        <button class="btn btn-primary" onclick="bookTickets(this.closest('.card'))">Tickets Buchen</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

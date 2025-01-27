@@ -76,12 +76,12 @@ function playTrailer(trailerUrl) {
 }
 
 function bookTickets(element) {
+    const movieId = element.dataset.movieId;
     const title = element.querySelector('.modal-title')?.textContent || 
                  element.querySelector('.card-title')?.textContent;
     const image = element.querySelector('.card-img-top').src;
     const genre = element.querySelector('.badge').textContent;
     const duration = element.querySelector('.duration').textContent;
-    const movieId = element.dataset.movieId;
 
     // Store movie details in localStorage
     const movieDetails = {
@@ -93,7 +93,8 @@ function bookTickets(element) {
     };
     localStorage.setItem('selectedMovie', JSON.stringify(movieDetails));
 
-    window.location.href = 'booking.html';
+    // Redirect with movieId as parameter
+    window.location.href = `booking.xhtml?movieId=${movieId}`;
 }
     
 // Close the modal if it's open

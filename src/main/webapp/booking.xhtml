@@ -1,35 +1,53 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Buchung - Kino Central</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="../assets/css/styles.css" rel="stylesheet">
-    <link href="booking-styles.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Buchung - IU-Cinema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="assets/css/styles.css" rel="stylesheet" />
+    <link href="assets/css/booking-styles.css" rel="stylesheet" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="../index.xhtml">Kino Central</a>
+            <a class="navbar-brand" href="index.xhtml">Kino Central</a>
         </div>
     </nav>
 
     <div class="container mt-4 mt-lg-5">
         <div class="row g-4">
+            <input type="hidden" id="bookingForm:movieId" />
             <!-- Left Column - Seat Selection -->
             <div class="col-12 col-lg-8 mt-0">
                 <div class="booking-section">
                     <h2 class="mb-4">Sitzplatzauswahl</h2>
                     
-                    <!-- Ticket Quantity Selection -->
-                    <div class="ticket-quantity mb-3 mb-lg-4">
-                        <label class="form-label">Anzahl der Tickets:</label>
-                        <div class="d-flex align-items-center">
-                            <button class="btn btn-outline-secondary" id="decreaseTickets"><i class="bi bi-dash"></i></button>
-                            <span id="ticketQuantity" class="mx-3">1</span>
-                            <button class="btn btn-outline-secondary" id="increaseTickets"><i class="bi bi-plus"></i></button>
+                    <!-- Ticket Quantity and Showtime Selection -->
+                    <div class="d-flex gap-4 mb-3 mb-lg-4">
+                        <div class="ticket-quantity">
+                            <label class="form-label">Anzahl der Tickets:</label>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-secondary" id="decreaseTickets"><i class="bi bi-dash"></i></button>
+                                <span id="ticketQuantity" class="mx-3">1</span>
+                                <button class="btn btn-outline-secondary" id="increaseTickets"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="showtime-selection">
+                            <label for="showtime" class="form-label">Vorstellung:</label>
+                            <select id="showtime" class="form-select">
+                                <c:forEach var="showtime" items="#{bookingBean.getMovieShowtimes()}">
+                                    <option data-booked-seats="#{bookinBean.getBookedSeatsForShowtime(showtime)}">#{showtime}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
                     
@@ -69,9 +87,9 @@
                 <div class="booking-summary">
                     <h3>Buchungsübersicht</h3>
                     <div class="movie-info-booking">
-                        <img id="movieImage" src="" alt="Movie Poster" class="img-fluid rounded mb-3">
-                        <h4 id="movieTitle"></h4>
-                        <p id="movieDetails" class="text-muted"></p>
+                        <img id="movieImage" src="#{bookingBean.getMovie().cover}" alt="Movie Poster" class="img-fluid rounded mb-3" />
+                        <h4 id="movieTitle">#{bookingBean.getMovie().name}</h4>
+                        <p id="movieDetails" class="text-muted">#{bookingBean.getMovie().shortDesc}</p>
                     </div>
                     
                     <div class="selected-seats-info mt-4">
@@ -92,7 +110,7 @@
                         </div>
                     </div>
 
-                    <button id="bookButton" class="btn btn-primary w-100 mt-4" disabled>
+                    <button id="bookButton" class="btn btn-primary w-100 mt-4" disabled="true">
                         Jetzt Buchen
                     </button>
                 </div>
@@ -101,6 +119,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="booking.js"></script>
+    <script src="assets/js/booking.js"></script>
 </body>
 </html>

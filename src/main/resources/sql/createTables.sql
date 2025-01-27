@@ -17,19 +17,21 @@ CREATE TABLE hall (
     totalSeats INT NOT NULL,
     totalRows INT NOT NULL,
     seatPlacement JSON,
-    bookedSeats JSON
+    specialSeats JSON
 );
 
 -- Create table for movies
 CREATE TABLE movie (
     movieId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    cover TEXT,
     short_desc TEXT,
     `desc` TEXT,
     playtime TIME,
     releaseDate DATE,
     broadcastingTimes JSON,
     topCast JSON,
+    price FLOAT,
     trailerUrl VARCHAR(255),
     director VARCHAR(255),
     genre JSON,
@@ -44,6 +46,9 @@ CREATE TABLE ticket (
     firstName VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
     broadcastTime TIME,
+    seatNumber VARCHAR(10) NOT NULL,
+    price FLOAT NOT NULL,
+    purchaseDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     movieId INT NOT NULL,
     hallId INT NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movie(movieId) ON DELETE CASCADE,

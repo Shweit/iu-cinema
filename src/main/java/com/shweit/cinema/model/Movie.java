@@ -1,11 +1,10 @@
 package com.shweit.cinema.model;
 
-import com.mysql.cj.protocol.ColumnDefinition;
 import lombok.Data;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,6 +19,8 @@ public class Movie {
 
     @Column(name = "short_desc", columnDefinition = "TEXT")
     private String shortDesc;
+    
+    private String cover;
 
     @Column(columnDefinition = "TEXT")
     private String desc;

@@ -8,15 +8,6 @@ function getMovieInfo() {
     return JSON.parse(movieData);
 }
 
-// Initialize movie information
-function initializeMovieInfo() {
-    const { title: movieTitle, image: movieImage, genre: movieGenre, duration: movieDuration } = getMovieInfo();
-    
-    document.getElementById('movieTitle').textContent = movieTitle || 'Film nicht gefunden';
-    document.getElementById('movieImage').src = movieImage || '';
-    document.getElementById('movieDetails').textContent = `${movieGenre || ''} ${movieDuration ? '| ' + movieDuration : ''}`;
-}
-
 // Initialize ticket quantity controls
 function initializeTicketQuantity() {
     const decreaseBtn = document.getElementById('decreaseTickets');
@@ -46,8 +37,6 @@ function generateSeats() {
     const container = document.getElementById('seatsContainer');
     const rows = 6;
     const seatsPerRow = 10;
-    const occupiedSeats = generateRandomOccupiedSeats(rows * seatsPerRow * 0.3); // 30% seats are occupied
-
     // Generate seats
     for (let row = 0; row < rows; row++) {
         const rowDiv = document.createElement('div');
@@ -62,7 +51,7 @@ function generateSeats() {
         for (let seat = 0; seat < seatsPerRow; seat++) {
             const seatNumber = row * seatsPerRow + seat + 1;
             const seatElement = document.createElement('div');
-            seatElement.className = `seat ${occupiedSeats.includes(seatNumber) ? 'occupied' : 'available'}`;
+            seatElement.className = 'seat available';
             seatElement.dataset.seatNumber = seatNumber;
             seatElement.title = `Reihe ${row + 1}, Sitz ${seat + 1}`;
             rowDiv.appendChild(seatElement);
@@ -70,15 +59,6 @@ function generateSeats() {
         
         container.appendChild(rowDiv);
     }
-}
-
-// Generate random occupied seats
-function generateRandomOccupiedSeats(count) {
-    const occupied = new Set();
-    while (occupied.size < count) {
-        occupied.add(Math.floor(Math.random() * 60) + 1);
-    }
-    return Array.from(occupied);
 }
 
 // Handle seat selection
@@ -138,7 +118,9 @@ function updateSelectedSeats() {
     const pricePerTicket = 12; // €12 per ticket
     
     const selectedSeats = container.querySelectorAll('.seat.selected');
-    selectedSeatsList.innerHTML = '';
+    while (selectedSeatsList.firstChild) {
+        selectedSeatsList.removeChild(selectedSeatsList.firstChild);
+    }
     
     Array.from(selectedSeats).forEach(seat => {
         const seatNumber = seat.dataset.seatNumber;
@@ -146,11 +128,16 @@ function updateSelectedSeats() {
         const seatInRow = ((seatNumber - 1) % 10) + 1;
         
         const li = document.createElement('li');
-        li.innerHTML = `
-            <span>Reihe ${row}, Sitz ${seatInRow}</span>
-            <span>€${pricePerTicket.toFixed(2)}</span>
-        `;
         li.classList.add('fade-in');
+        
+        const seatSpan = document.createElement('span');
+        seatSpan.textContent = `Reihe ${row}, Sitz ${seatInRow}`;
+        
+        const priceSpan = document.createElement('span');
+        priceSpan.textContent = `€${pricePerTicket.toFixed(2)}`;
+        
+        li.appendChild(seatSpan);
+        li.appendChild(priceSpan);
         selectedSeatsList.appendChild(li);
     });
 
@@ -167,9 +154,59 @@ function updateSelectedSeats() {
     }
 }
 
-// Save booking information and redirect to payment page
+
+// Load seats based on selected showtime
+function loadSeatsForShowtime() {
+    const showtimeSelect = document.getElementById('showtime');
+    const showtimeId = showtimeSelect.value;
+    
+    if (!showtimeId) return;
+
+    // Clear existing seat selection
+    const selectedSeats = document.querySelectorAll('.seat.selected');
+    selectedSeats.forEach(seat => seat.classList.remove('selected'));
+    
+    // Reset all seats to available
+    document.querySelectorAll('.seat').forEach(seat => {
+        seat.classList.remove('occupied');
+        seat.classList.add('available');
+    });
+
+    // Fetch occupied seats from API
+    fetch(`/api/bookings/showtime/${showtimeId}/seats`)
+        .then(response => response.json())
+        .then(occupiedSeats => {
+            // Update seat status
+            occupiedSeats.forEach(seatInfo => {
+                const seatNumber = (seatInfo.row - 1) * 10 + seatInfo.seat;
+                const seatElement = document.querySelector(`[data-seat-number="${seatNumber}"]`);
+                if (seatElement) {
+                    seatElement.classList.remove('available');
+                    seatElement.classList.add('occupied');
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching occupied seats:', error);
+        });
+
+    updateSelectedSeats();
+}
+
+// Initialize everything when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTicketQuantity();
+    generateSeats();
+    handleSeatSelection();
+    
+    // Add booking button click handler
+    document.getElementById('bookButton').addEventListener('click', handleBooking);
+});
+
+// Update handleBooking function to include showtime
 function handleBooking() {
     const movieInfo = getMovieInfo();
+    const showtime = document.getElementById('showtime').value;
     const selectedSeats = Array.from(document.querySelectorAll('.seat.selected')).map(seat => {
         const seatNumber = parseInt(seat.dataset.seatNumber);
         const row = Math.floor((seatNumber - 1) / 10) + 1;
@@ -179,6 +216,7 @@ function handleBooking() {
     
     const bookingData = {
         movie: movieInfo,
+        showtime: showtime,
         seats: selectedSeats,
         totalPrice: parseFloat(document.getElementById('totalPrice').textContent.replace('€', ''))
     };
@@ -188,14 +226,3 @@ function handleBooking() {
     
     window.location.href = 'payment.html';
 }
-
-// Initialize everything when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    initializeMovieInfo();
-    initializeTicketQuantity();
-    generateSeats();
-    handleSeatSelection();
-    
-    // Add booking button click handler
-    document.getElementById('bookButton').addEventListener('click', handleBooking);
-});

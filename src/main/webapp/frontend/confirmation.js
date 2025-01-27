@@ -17,30 +17,82 @@ function getBookingInfo() {
 function generateVirtualTicket(movieInfo, seat) {
     const ticketNumber = generateTicketNumber(seat);
     
-    return `
-        <div class="card bg-dark border-light mb-3">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="${movieInfo.image}" class="img-fluid rounded" alt="${movieInfo.title}">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h3 class="card-title">${movieInfo.title}</h3>
-                                <p class="card-text">${movieInfo.genre} | ${movieInfo.duration}</p>
-                                <div class="ticket-details">
-                                    <p class="mb-1"><strong>Sitzplatz:</strong> Reihe ${seat.row}, Sitz ${seat.seat}</p>
-                                    <p class="mb-1"><strong>Ticket-Nr:</strong> ${ticketNumber}</p>
-                                    <p class="mb-0"><strong>Preis:</strong> €12.00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'card bg-dark border-light mb-3';
+    
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+    
+    const row = document.createElement('div');
+    row.className = 'row';
+    
+    const imgCol = document.createElement('div');
+    imgCol.className = 'col-md-3';
+    
+    const img = document.createElement('img');
+    img.src = movieInfo.image;
+    img.className = 'img-fluid rounded';
+    img.alt = movieInfo.title;
+    
+    const contentCol = document.createElement('div');
+    contentCol.className = 'col-md-9';
+    
+    const flexDiv = document.createElement('div');
+    flexDiv.className = 'd-flex justify-content-between align-items-start';
+    
+    const infoDiv = document.createElement('div');
+    
+    const title = document.createElement('h3');
+    title.className = 'card-title';
+    title.textContent = movieInfo.title;
+    
+    const details = document.createElement('p');
+    details.className = 'card-text';
+    details.textContent = `${movieInfo.genre} | ${movieInfo.duration}`;
+    
+    const ticketDetails = document.createElement('div');
+    ticketDetails.className = 'ticket-details';
+    
+    const seatInfo = document.createElement('p');
+    seatInfo.className = 'mb-1';
+    const seatStrong = document.createElement('strong');
+    seatStrong.textContent = 'Sitzplatz:';
+    seatInfo.appendChild(seatStrong);
+    seatInfo.appendChild(document.createTextNode(` Reihe ${seat.row}, Sitz ${seat.seat}`));
+    
+    const ticketInfo = document.createElement('p');
+    ticketInfo.className = 'mb-1';
+    const ticketStrong = document.createElement('strong');
+    ticketStrong.textContent = 'Ticket-Nr:';
+    ticketInfo.appendChild(ticketStrong);
+    ticketInfo.appendChild(document.createTextNode(` ${ticketNumber}`));
+    
+    const priceInfo = document.createElement('p');
+    priceInfo.className = 'mb-0';
+    const priceStrong = document.createElement('strong');
+    priceStrong.textContent = 'Preis:';
+    priceInfo.appendChild(priceStrong);
+    priceInfo.appendChild(document.createTextNode(' €12.00'));
+    
+    ticketDetails.appendChild(seatInfo);
+    ticketDetails.appendChild(ticketInfo);
+    ticketDetails.appendChild(priceInfo);
+    
+    infoDiv.appendChild(title);
+    infoDiv.appendChild(details);
+    infoDiv.appendChild(ticketDetails);
+    
+    flexDiv.appendChild(infoDiv);
+    contentCol.appendChild(flexDiv);
+    
+    imgCol.appendChild(img);
+    row.appendChild(imgCol);
+    row.appendChild(contentCol);
+    
+    cardBody.appendChild(row);
+    cardDiv.appendChild(cardBody);
+    
+    return cardDiv.outerHTML;
 }
 
 // Generate a unique ticket number
@@ -56,7 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const virtualTicketsContainer = document.getElementById('virtualTickets');
 
     // Add loading animation
-    virtualTicketsContainer.innerHTML = '<div class="text-center"><div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'text-center';
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner-border text-light';
+    spinner.setAttribute('role', 'status');
+    const spinnerText = document.createElement('span');
+    spinnerText.className = 'visually-hidden';
+    spinnerText.textContent = 'Loading...';
+    spinner.appendChild(spinnerText);
+    loadingDiv.appendChild(spinner);
+    virtualTicketsContainer.innerHTML = '';
+    virtualTicketsContainer.appendChild(loadingDiv);
 
     // Simulate loading delay for better UX
     setTimeout(() => {
@@ -69,7 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Generate a virtual ticket for each seat
             bookingInfo.seats.forEach(seat => {
                 const ticketHTML = generateVirtualTicket(bookingInfo.movie, seat);
-                virtualTicketsContainer.insertAdjacentHTML('beforeend', ticketHTML);
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = ticketHTML;
+                virtualTicketsContainer.appendChild(tempDiv.firstChild);
             });
 
             // Clear localStorage only after successfully generating all tickets
@@ -77,17 +142,30 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('bookingData');
 
             // Add navigation buttons
-            const navigationButtons = `
-                <div class="d-flex justify-content-center mt-4 mb-5">
-                    <a href="../index.xhtml" class="btn btn-danger btn-lg">
-                        <i class="bi bi-house-door-fill me-2"></i>Zurück zur Startseite
-                    </a>
-                </div>
-            `;
-            virtualTicketsContainer.insertAdjacentHTML('beforeend', navigationButtons);
+            const navDiv = document.createElement('div');
+            navDiv.className = 'd-flex justify-content-center mt-4 mb-5';
+            
+            const homeLink = document.createElement('a');
+            homeLink.href = '../index.xhtml';
+            homeLink.className = 'btn btn-danger btn-lg';
+            
+            const icon = document.createElement('i');
+            icon.className = 'bi bi-house-door-fill me-2';
+            
+            homeLink.appendChild(icon);
+            homeLink.appendChild(document.createTextNode('Zurück zur Startseite'));
+            navDiv.appendChild(homeLink);
+            
+            virtualTicketsContainer.appendChild(navDiv);
         } catch (error) {
             console.error('Error generating tickets:', error);
-            virtualTicketsContainer.innerHTML = '<div class="alert alert-danger">Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</div>';
+            virtualTicketsContainer.innerHTML = '';
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger';
+            errorDiv.textContent = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.';
+            virtualTicketsContainer.appendChild(errorDiv);
+            
             setTimeout(() => {
                 window.location.href = 'index.xhtml';
             }, 3000);

@@ -22,6 +22,9 @@ public class Ticket {
     @Column(nullable = false)
     private Time broadcastTime;
 
+    @Column(nullable = false)
+    private String seatNumber;
+
     @ManyToOne
     @JoinColumn(name = "movieId", nullable = false)
     private Movie movie;

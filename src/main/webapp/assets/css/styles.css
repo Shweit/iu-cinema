@@ -69,10 +69,11 @@ body {
 
 .movie-info {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     align-items: center;
     margin-top: 1rem;
-    padding: 0.5rem;
+    padding: 0.75rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 }
@@ -81,8 +82,17 @@ body {
     color: #e50914;
     font-size: 0.9rem;
     font-weight: 500;
+    margin-left: auto;
 }
 
+.badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background-color: #e50914 !important;
+    margin: 0;
+    white-space: nowrap;
+}
 .card-footer {
     background-color: transparent;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
