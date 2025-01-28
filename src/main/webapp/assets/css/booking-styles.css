@@ -30,10 +30,30 @@
     letter-spacing: 2px;
 }
 
-.ticket-quantity {
+.ticket-quantity, .showtime-selection {
+    flex: 0 0 280px;  /* Fixed width, no growing or shrinking */
+    height: 150px;    /* Fixed height for both */
+    padding: 1.5rem;
     background: rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-    border-radius: 8px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ticket-quantity .d-flex {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.showtime-selection select {
+    margin-top: auto;
+    height: 45px;
+}
+
+.ticket-quantity {
+    padding: 1.5rem;
 }
 
 .ticket-quantity button {
@@ -75,11 +95,7 @@
 }
 
 .showtime-selection {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1.5rem;
-    border-radius: 12px;
-    max-width: 300px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .showtime-selection label {
@@ -92,7 +108,7 @@
 
 .showtime-selection select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0 0.75rem;
     background: linear-gradient(145deg, #2a2a2a, #252525);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;

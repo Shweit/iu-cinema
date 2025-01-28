@@ -14,7 +14,7 @@ VALUES
     ('Hall C', 150, 15, 
      '{"rows":15,"columns":10}', 
      '{"wheelchair": ["15:01", "15:02"], "extraLegroom": ["08:01", "08:02", "08:03"], "couples": ["01:09", "01:10"]}');
-     
+
 -- Insert sample data into movies
 INSERT INTO movie (name, cover, `desc`, playtime, releaseDate, topCast, trailerUrl, director, genre, rating, hallId, broadcastingTimes, short_desc, price)
 VALUES
@@ -33,6 +33,21 @@ VALUES
     ('Lisa', 'Anderson', 1, 1, '10:00', '02:01', 12.99, NOW()),
     ('Tom', 'Davis', 1, 1, '10:00', '02:02', 12.99, NOW()),
     ('Emma', 'White', 1, 1, '10:00', '02:03', 12.99, NOW()),
+    ('Frank', 'Miller', 1, 1, '10:00', '04:05', 12.99, NOW()),
+    ('Grace', 'Lee', 1, 1, '10:00', '04:06', 12.99, NOW()),
+    ('Henry', 'Wilson', 1, 1, '10:00', '06:08', 12.99, NOW()),
+    ('Ivy', 'Chen', 1, 1, '10:00', '07:03', 12.99, NOW()),
+    ('Jack', 'Brown', 1, 1, '10:00', '08:07', 12.99, NOW()),
+    
+    -- Avengers: Endgame (13:00 showing)
+    ('Karen', 'Taylor', 1, 1, '13:00', '02:04', 12.99, NOW()),
+    ('Leo', 'Martin', 1, 1, '13:00', '02:05', 12.99, NOW()),
+    ('Mary', 'Johnson', 1, 1, '13:00', '03:07', 12.99, NOW()),
+    ('Nick', 'Davis', 1, 1, '13:00', '04:08', 12.99, NOW()),
+    ('Olivia', 'Smith', 1, 1, '13:00', '05:05', 12.99, NOW()),
+    ('Paul', 'Wilson', 1, 1, '13:00', '06:02', 12.99, NOW()),
+    ('Quinn', 'Brown', 1, 1, '13:00', '07:06', 12.99, NOW()),
+    ('Rachel', 'Lee', 1, 1, '13:00', '08:04', 12.99, NOW()),
     
     -- Avengers: Endgame (18:30 showing)
     ('David', 'Miller', 1, 1, '18:30', '03:01', 12.99, NOW()),
@@ -40,6 +55,28 @@ VALUES
     ('James', 'Brown', 1, 1, '18:30', '03:03', 12.99, NOW()),
     ('Sophie', 'Clark', 1, 1, '18:30', '04:01', 12.99, NOW()),
     ('Oliver', 'Lee', 1, 1, '18:30', '04:02', 12.99, NOW()),
+    ('Sam', 'Wilson', 1, 1, '18:30', '05:07', 12.99, NOW()),
+    ('Tina', 'Davis', 1, 1, '18:30', '06:04', 12.99, NOW()),
+    ('Uma', 'Patel', 1, 1, '18:30', '07:08', 12.99, NOW()),
+    ('Victor', 'Chen', 1, 1, '18:30', '08:03', 12.99, NOW()),
+    ('Wendy', 'Taylor', 1, 1, '18:30', '09:05', 12.99, NOW()),
+    
+    -- Avengers: Endgame (20:15 showing)
+    ('Xavier', 'Brown', 1, 1, '20:15', '02:06', 12.99, NOW()),
+    ('Yuki', 'Tanaka', 1, 1, '20:15', '03:04', 12.99, NOW()),
+    ('Zoe', 'Martin', 1, 1, '20:15', '04:07', 12.99, NOW()),
+    ('Adam', 'Smith', 1, 1, '20:15', '05:03', 12.99, NOW()),
+    ('Beth', 'Johnson', 1, 1, '20:15', '06:05', 12.99, NOW()),
+    ('Carl', 'Davis', 1, 1, '20:15', '07:02', 12.99, NOW()),
+    ('Diana', 'Wilson', 1, 1, '20:15', '08:06', 12.99, NOW()),
+    
+    -- Inception (09:00 showing)
+    ('Eric', 'Taylor', 2, 2, '09:00', '03:05', 11.99, NOW()),
+    ('Fiona', 'Brown', 2, 2, '09:00', '04:03', 11.99, NOW()),
+    ('George', 'Lee', 2, 2, '09:00', '05:06', 11.99, NOW()),
+    ('Helen', 'Chen', 2, 2, '09:00', '06:07', 11.99, NOW()),
+    ('Ian', 'Wilson', 2, 2, '09:00', '07:04', 11.99, NOW()),
+    ('Julia', 'Martin', 2, 2, '09:00', '08:02', 11.99, NOW()),
     
     -- Inception (15:30 showing)
     ('Jane', 'Smith', 2, 2, '15:30', '01:01', 11.99, NOW()),
@@ -48,12 +85,29 @@ VALUES
     ('Henry', 'Garcia', 2, 2, '15:30', '02:01', 11.99, NOW()),
     ('Grace', 'Rodriguez', 2, 2, '15:30', '02:02', 11.99, NOW()),
     ('William', 'Lopez', 2, 2, '15:30', '02:03', 11.99, NOW()),
+    ('Kevin', 'Taylor', 2, 2, '15:30', '04:06', 11.99, NOW()),
+    ('Laura', 'Brown', 2, 2, '15:30', '05:04', 11.99, NOW()),
+    ('Mark', 'Wilson', 2, 2, '15:30', '06:03', 11.99, NOW()),
+    ('Nina', 'Chen', 2, 2, '15:30', '07:07', 11.99, NOW()),
+    
+    -- Inception (18:00 showing)
+    ('Oscar', 'Martin', 2, 2, '18:00', '02:07', 11.99, NOW()),
+    ('Penny', 'Davis', 2, 2, '18:00', '03:06', 11.99, NOW()),
+    ('Quinn', 'Taylor', 2, 2, '18:00', '04:04', 11.99, NOW()),
+    ('Ryan', 'Brown', 2, 2, '18:00', '05:02', 11.99, NOW()),
+    ('Sara', 'Wilson', 2, 2, '18:00', '06:06', 11.99, NOW()),
+    ('Tom', 'Lee', 2, 2, '18:00', '07:05', 11.99, NOW()),
+    ('Uma', 'Chen', 2, 2, '18:00', '08:08', 11.99, NOW()),
     
     -- Inception (20:15 showing)
     ('Emily', 'Wilson', 2, 2, '20:15', '03:01', 11.99, NOW()),
     ('Daniel', 'Anderson', 2, 2, '20:15', '03:02', 11.99, NOW()),
     ('Sofia', 'Thomas', 2, 2, '20:15', '03:03', 11.99, NOW()),
     ('Lucas', 'Jackson', 2, 2, '20:15', '04:01', 11.99, NOW()),
+    ('Victor', 'Martin', 2, 2, '20:15', '05:08', 11.99, NOW()),
+    ('Wendy', 'Davis', 2, 2, '20:15', '06:01', 11.99, NOW()),
+    ('Xavier', 'Taylor', 2, 2, '20:15', '07:01', 11.99, NOW()),
+    ('Yuki', 'Brown', 2, 2, '20:15', '08:05', 11.99, NOW()),
     
     -- The Dark Knight (10:00 showing)
     ('Alice', 'Johnson', 3, 3, '10:00', '01:01', 11.99, NOW()),
@@ -61,13 +115,39 @@ VALUES
     ('Mia', 'Brown', 3, 3, '10:00', '01:03', 11.99, NOW()),
     ('Jack', 'Taylor', 3, 3, '10:00', '02:01', 11.99, NOW()),
     ('Ava', 'Davis', 3, 3, '10:00', '02:02', 11.99, NOW()),
+    ('Zoe', 'Wilson', 3, 3, '10:00', '04:08', 11.99, NOW()),
+    ('Adam', 'Chen', 3, 3, '10:00', '05:01', 11.99, NOW()),
+    ('Beth', 'Martin', 3, 3, '10:00', '06:06', 11.99, NOW()),
+    ('Carl', 'Lee', 3, 3, '10:00', '07:03', 11.99, NOW()),
+    
+    -- The Dark Knight (13:00 showing)
+    ('Diana', 'Taylor', 3, 3, '13:00', '02:08', 11.99, NOW()),
+    ('Eric', 'Brown', 3, 3, '13:00', '03:07', 11.99, NOW()),
+    ('Fiona', 'Wilson', 3, 3, '13:00', '04:05', 11.99, NOW()),
+    ('George', 'Davis', 3, 3, '13:00', '05:04', 11.99, NOW()),
+    ('Helen', 'Martin', 3, 3, '13:00', '06:02', 11.99, NOW()),
+    ('Ian', 'Chen', 3, 3, '13:00', '07:06', 11.99, NOW()),
+    ('Julia', 'Lee', 3, 3, '13:00', '08:01', 11.99, NOW()),
+    
+    -- The Dark Knight (18:30 showing)
+    ('Kevin', 'Brown', 3, 3, '18:30', '02:05', 11.99, NOW()),
+    ('Laura', 'Wilson', 3, 3, '18:30', '03:04', 11.99, NOW()),
+    ('Mark', 'Taylor', 3, 3, '18:30', '04:06', 11.99, NOW()),
+    ('Nina', 'Davis', 3, 3, '18:30', '05:03', 11.99, NOW()),
+    ('Oscar', 'Martin', 3, 3, '18:30', '06:07', 11.99, NOW()),
+    ('Penny', 'Chen', 3, 3, '18:30', '07:02', 11.99, NOW()),
+    ('Quinn', 'Lee', 3, 3, '18:30', '08:04', 11.99, NOW()),
     
     -- The Dark Knight (20:15 showing)
     ('Noah', 'Martin', 3, 3, '20:15', '03:01', 11.99, NOW()),
     ('Isabella', 'Thompson', 3, 3, '20:15', '03:02', 11.99, NOW()),
     ('Ethan', 'Moore', 3, 3, '20:15', '03:03', 11.99, NOW()),
     ('Charlotte', 'Jackson', 3, 3, '20:15', '04:01', 11.99, NOW()),
-    ('Alexander', 'White', 3, 3, '20:15', '04:02', 11.99, NOW());    
+    ('Alexander', 'White', 3, 3, '20:15', '04:02', 11.99, NOW()),
+    ('Ryan', 'Wilson', 3, 3, '20:15', '05:07', 11.99, NOW()),
+    ('Sara', 'Davis', 3, 3, '20:15', '06:04', 11.99, NOW()),
+    ('Tom', 'Taylor', 3, 3, '20:15', '07:08', 11.99, NOW()),
+    ('Uma', 'Brown', 3, 3, '20:15', '08:05', 11.99, NOW());
 
 -- Insert sample data into billing
 INSERT INTO billing (firstName, lastName, street, zip, houseNumber, city, paymentInfo, transactionDetails)

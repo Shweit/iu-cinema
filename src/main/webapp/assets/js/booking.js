@@ -208,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Update handleBooking function to include showtime
 function handleBooking() {
-    const movieInfo = getMovieInfo();
     const showtime = document.getElementById('showtime').value;
     const selectedSeats = Array.from(document.querySelectorAll('.seat.selected')).map(seat => {
         const seatNumber = parseInt(seat.dataset.seatNumber);
@@ -218,7 +217,6 @@ function handleBooking() {
     });
     
     const bookingData = {
-        movie: movieInfo,
         showtime: showtime,
         seats: selectedSeats,
         totalPrice: parseFloat(document.getElementById('totalPrice').textContent.replace('€', ''))
@@ -227,5 +225,5 @@ function handleBooking() {
     // Store booking data in localStorage
     localStorage.setItem('bookingData', JSON.stringify(bookingData));
     
-    window.location.href = 'payment.html';
+    window.location.href = 'payment.xhtml?movieId=' + movieInfo.movieId;
 }
