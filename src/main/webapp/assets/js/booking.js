@@ -1,13 +1,3 @@
-// Get movie information from localStorage
-function getMovieInfo() {
-    const movieData = localStorage.getItem('selectedMovie');
-    if (!movieData) {
-        window.location.href = 'index.xhtml';
-        return {};
-    }
-    return JSON.parse(movieData);
-}
-
 // Initialize ticket quantity controls
 function initializeTicketQuantity() {
     const decreaseBtn = document.getElementById('decreaseTickets');
@@ -45,13 +35,13 @@ function generateSeats() {
     for (let row = 0; row < rows; row++) {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'seat-row';
-        
+
         // Add row number
         const rowNumber = document.createElement('div');
         rowNumber.className = 'row-number';
         rowNumber.textContent = row + 1;
         rowDiv.appendChild(rowNumber);
-        
+
         for (let seat = 0; seat < seatsPerRow; seat++) {
             const seatNumber = row * seatsPerRow + seat + 1;
             const seatElement = document.createElement('div');
@@ -60,7 +50,7 @@ function generateSeats() {
             seatElement.title = `Reihe ${row + 1}, Sitz ${seat + 1}`;
             rowDiv.appendChild(seatElement);
         }
-        
+
         container.appendChild(rowDiv);
     }
 }
@@ -120,26 +110,26 @@ function updateSelectedSeats() {
     const totalPriceElement = document.getElementById('totalPrice');
     const bookButton = document.getElementById('bookButton');
     const pricePerTicket = 12; // €12 per ticket
-    
+
     const selectedSeats = container.querySelectorAll('.seat.selected');
     while (selectedSeatsList.firstChild) {
         selectedSeatsList.removeChild(selectedSeatsList.firstChild);
     }
-    
+
     Array.from(selectedSeats).forEach(seat => {
         const seatNumber = seat.dataset.seatNumber;
         const row = Math.floor((seatNumber - 1) / 10) + 1;
         const seatInRow = ((seatNumber - 1) % 10) + 1;
-        
+
         const li = document.createElement('li');
         li.classList.add('fade-in');
-        
+
         const seatSpan = document.createElement('span');
         seatSpan.textContent = `Reihe ${row}, Sitz ${seatInRow}`;
-        
+
         const priceSpan = document.createElement('span');
         priceSpan.textContent = `€${pricePerTicket.toFixed(2)}`;
-        
+
         li.appendChild(seatSpan);
         li.appendChild(priceSpan);
         selectedSeatsList.appendChild(li);
@@ -148,7 +138,7 @@ function updateSelectedSeats() {
     const totalPrice = selectedSeats.length * pricePerTicket;
     totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
     bookButton.disabled = selectedSeats.length === 0;
-    
+
     if (bookButton.disabled) {
         bookButton.classList.remove('btn-primary');
         bookButton.classList.add('btn-secondary');
@@ -201,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generateSeats();
     fillAlreadyBookedSeats();
     handleSeatSelection();
-    
+
     // Add booking button click handler
     document.getElementById('bookButton').addEventListener('click', handleBooking);
 });
@@ -215,15 +205,18 @@ function handleBooking() {
         const seatInRow = ((seatNumber - 1) % 10) + 1;
         return { row, seat: seatInRow, seatNumber };
     });
-    
+
     const bookingData = {
         showtime: showtime,
         seats: selectedSeats,
         totalPrice: parseFloat(document.getElementById('totalPrice').textContent.replace('€', ''))
     };
-    
+
     // Store booking data in localStorage
     localStorage.setItem('bookingData', JSON.stringify(bookingData));
-    
-    window.location.href = 'payment.xhtml?movieId=' + movieInfo.movieId;
+
+    // Retrieve the movieId from the URL
+    const movieId = new URLSearchParams(window.location.search).get('movieId');
+
+    window.location.href = 'payment.xhtml?movieId=' + movieId;
 }

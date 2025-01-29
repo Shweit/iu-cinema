@@ -6,7 +6,7 @@ function getBookingInfo() {
         return null;
     }
     const parsedData = JSON.parse(bookingData);
-    if (!parsedData || !parsedData.movie || !parsedData.seats || !parsedData.totalPrice) {
+    if (!parsedData || !parsedData.seats || !parsedData.totalPrice) {
         window.location.href = 'index.xhtml';
         return null;
     }
@@ -16,24 +16,13 @@ function getBookingInfo() {
 // Initialize booking information display
 function initializeBookingInfo() {
     const bookingInfo = getBookingInfo();
-    
-    if (!bookingInfo || !bookingInfo.movie || !bookingInfo.seats || !bookingInfo.totalPrice) {
-        window.location.href = 'index.xhtml';
-        return;
-    }
-    
-    // Update movie information
-    document.getElementById('movieTitle').textContent = bookingInfo.movie.title || '';
-    document.getElementById('movieImage').src = bookingInfo.movie.image || '';
-    document.getElementById('movieDetails').textContent = 
-        `${bookingInfo.movie.genre || ''} ${bookingInfo.movie.duration ? '| ' + bookingInfo.movie.duration : ''}`;
-    
+
     // Update selected seats
     const seatsList = document.getElementById('selectedSeatsList');
-    seatsList.innerHTML = bookingInfo.seats.map(seat => 
+    seatsList.innerHTML = bookingInfo.seats.map(seat =>
         `<li>Reihe ${seat.row}, Sitz ${seat.seat}</li>`
     ).join('');
-    
+
     // Update total price
     document.getElementById('totalPrice').textContent = `€${bookingInfo.totalPrice.toFixed(2)}`;
 }
@@ -51,13 +40,15 @@ function initializeTicketHolders() {
     if (!bookingInfo || !bookingInfo.seats) return;
     const ticketHolderSection = document.getElementById('ticketHolderSection');
     if (!ticketHolderSection) return;
-    
+
     const seats = bookingInfo.seats;
     const pricePerTicket = 12.00;
-    
+
     function createTicketHolder(index) {
         const ticketId = `ticket-${index}`;
-        const uniqueTicketId = generateTicketId(bookingInfo.movie.id, seats[index - 1]);
+
+        const movieId = new URLSearchParams(window.location.search).get('movieId');
+        const uniqueTicketId = generateTicketId(movieId, seats[index - 1]);
         const ticketHolder = document.createElement('div');
         ticketHolder.className = 'accordion-item bg-dark text-light border-secondary mb-3';
         ticketHolder.innerHTML = `
@@ -93,7 +84,7 @@ function initializeTicketHolders() {
             const isComplete = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
             statusSpan.textContent = isComplete ? 'Vollständig' : 'Unvollständig';
             statusSpan.className = `ticket-status ms-2 ${isComplete ? 'text-success opacity-75' : 'opacity-75'}`;
-        
+
             if (isComplete) {
                 const bsCollapse = new bootstrap.Collapse(accordionCollapse, {
                     toggle: false
@@ -102,28 +93,12 @@ function initializeTicketHolders() {
             }
         }
 
-        firstNameInput.addEventListener('blur', () => {
-            if (lastNameInput.value.trim() !== '') {
-                checkCompletion();
-            }
-        });
-        lastNameInput.addEventListener('blur', () => {
-            if (firstNameInput.value.trim() !== '') {
-                checkCompletion();
-            }
-        });
+        firstNameInput.addEventListener('blur', checkCompletion);
+        lastNameInput.addEventListener('blur', checkCompletion);
 
         // Keep input event for real-time status updates
-        firstNameInput.addEventListener('input', () => {
-            const isComplete = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
-            statusSpan.textContent = isComplete ? 'Vollständig' : 'Unvollständig';
-            statusSpan.className = `ticket-status ms-2 ${isComplete ? 'text-success opacity-75' : 'opacity-75'}`;
-        });
-        lastNameInput.addEventListener('input', () => {
-            const isComplete = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
-            statusSpan.textContent = isComplete ? 'Vollständig' : 'Unvollständig';
-            statusSpan.className = `ticket-status ms-2 ${isComplete ? 'text-success opacity-75' : 'opacity-75'}`;
-        });
+        firstNameInput.addEventListener('input', checkCompletion);
+        lastNameInput.addEventListener('input', checkCompletion);
 
         return ticketHolder;
     }
@@ -161,9 +136,9 @@ function collectTicketHolderInfo() {
         const firstName = element.querySelector('.ticket-firstname').value.trim();
         const lastName = element.querySelector('.ticket-lastname').value.trim();
         const ticketId = element.querySelector('.ticket-id').value;
-        
+
         if (!firstName || !lastName) return null;
-        
+
         ticketHolders.push({
             seat: bookingInfo.seats[i],
             firstName,
@@ -178,7 +153,7 @@ function collectTicketHolderInfo() {
 function validateForm() {
     const form = document.getElementById('billingForm');
     if (!form) return false;
-    
+
     const inputs = form.querySelectorAll('input[required]');
     let isValid = true;
 
@@ -203,84 +178,26 @@ function validateForm() {
     return isValid;
 }
 
-// Update form submit handler
-document.addEventListener('DOMContentLoaded', () => {
-    initializeBookingInfo();
-    initializeTicketHolders();
-    
-    // Add input event listeners for real-time validation
-    const form = document.getElementById('billingForm');
-    const inputs = form.querySelectorAll('input[required]');
-    
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (input.value.trim()) {
-                clearError(input);
-            }
-        });
-
-        input.addEventListener('blur', () => {
-            if (!input.value.trim()) {
-                showError(input, 'Dieses Feld ist erforderlich');
-            }
-        });
-    });
-
-    // Add payment form submit handler
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (validateForm()) {
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verarbeitung...';
-
-            setTimeout(() => {
-                const bookingInfo = getBookingInfo();
-                if (bookingInfo && Object.keys(bookingInfo).length > 0) {
-                    const ticketHolders = collectTicketHolderInfo();
-                    bookingInfo.ticketHolders = ticketHolders;
-                    
-                    try {
-                        localStorage.setItem('bookingData', JSON.stringify(bookingInfo));
-                        window.location.href = 'confirmation.html';
-                    } catch (error) {
-                        console.error('Error storing booking data:', error);
-                        alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
-                        submitButton.disabled = false;
-                        submitButton.textContent = originalText;
-                    }
-                } else {
-                    alert('Buchungsdaten nicht gefunden. Bitte beginnen Sie den Buchungsprozess erneut.');
-                    window.location.href = 'index.xhtml';
-                }
-            }, 1500);
-        }
-    });
-});
-
 // Show error message
 function showError(input, message) {
     if (!input || !input.closest) return;
-    
-    const formGroup = input.closest('.form-group');
+
+    let formGroup = input.closest('.form-group');
     if (!formGroup) {
-        // If no form-group is found, create one and wrap the input
         const newFormGroup = document.createElement('div');
         newFormGroup.className = 'form-group';
         input.parentNode.insertBefore(newFormGroup, input);
         newFormGroup.appendChild(input);
         formGroup = newFormGroup;
     }
-    
+
     let errorDiv = formGroup.querySelector('.error-message');
     if (!errorDiv) {
         errorDiv = document.createElement('div');
         errorDiv.className = 'error-message text-danger mt-1';
         formGroup.appendChild(errorDiv);
     }
-    
+
     errorDiv.textContent = message;
     input.classList.add('is-invalid');
 }
@@ -288,10 +205,10 @@ function showError(input, message) {
 // Clear error message
 function clearError(input) {
     if (!input || !input.closest) return;
-    
+
     const formGroup = input.closest('.form-group');
     if (!formGroup) return;
-    
+
     const errorDiv = formGroup.querySelector('.error-message');
     if (errorDiv) {
         errorDiv.remove();
@@ -316,18 +233,48 @@ function isValidCVV(cvv) {
 // Format card number with spaces
 function formatCardNumber(input) {
     const value = input.value.replace(/\s/g, '');
-    const formatted = value.replace(/(.{4})/g, '$1 ').trim();
-    input.value = formatted;
+    input.value = value.replace(/(.{4})/g, '$1 ').trim();
+}
+
+// Handle payment method selection
+function handlePaymentMethodChange(event) {
+    const paymentMethod = event.target.value;
+    const sepaFields = document.getElementById('sepaFields');
+    const creditCardFields = document.getElementById('creditCardFields');
+
+    const sepaInputs = sepaFields.querySelectorAll('input');
+    const creditCardInputs = creditCardFields.querySelectorAll('input');
+
+    if (paymentMethod === 'sepa') {
+        sepaFields.style.display = 'block';
+        creditCardFields.style.display = 'none';
+
+        sepaInputs.forEach(input => input.required = true);
+        creditCardInputs.forEach(input => input.required = false);
+    } else if (paymentMethod === 'creditCard') {
+        creditCardFields.style.display = 'block';
+        sepaFields.style.display = 'none';
+
+        creditCardInputs.forEach(input => input.required = true);
+        sepaInputs.forEach(input => input.required = false);
+    } else {
+        sepaFields.style.display = 'none';
+        creditCardFields.style.display = 'none';
+
+        sepaInputs.forEach(input => input.required = false);
+        creditCardInputs.forEach(input => input.required = false);
+    }
 }
 
 // Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeBookingInfo();
-    
+    initializeTicketHolders();
+
     // Add input event listeners for real-time validation
     const form = document.getElementById('billingForm');
     const inputs = form.querySelectorAll('input[required]');
-    
+
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             if (input.id === 'cardNumber') {
@@ -348,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add payment form submit handler
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         if (validateForm()) {
             // Show loading state
             const submitButton = form.querySelector('button[type="submit"]');
@@ -361,9 +308,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const bookingInfo = getBookingInfo();
                 if (bookingInfo && Object.keys(bookingInfo).length > 0) {
                     // Store the booking info again to ensure it's available in confirmation page
+                    bookingInfo.ticketHolders = collectTicketHolderInfo();
+                    bookingInfo.movieId = new URLSearchParams(window.location.search).get('movieId');
                     try {
                         localStorage.setItem('bookingData', JSON.stringify(bookingInfo));
-                        window.location.href = 'confirmation.html';
+                        window.location.href = 'confirmation.xhtml';
                     } catch (error) {
                         console.error('Error storing booking data:', error);
                         alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
@@ -376,5 +325,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 1500);
         }
+    });
+
+    // Handle payment method changes
+    const paymentMethodInputs = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentMethodInputs.forEach(input => {
+        input.addEventListener('change', handlePaymentMethodChange);
     });
 });

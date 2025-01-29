@@ -8,8 +8,8 @@
  */
 
 
-CREATE DATABASE cinema;
+CREATE DATABASE `102204056`;
 
 CREATE USER 'cinema'@'localhost' IDENTIFIED BY 'iu-cinema';
-GRANT ALL PRIVILEGES ON cinema.* TO 'cinema'@'localhost';
+GRANT ALL PRIVILEGES ON `102204056`.* TO 'cinema'@'localhost';
 FLUSH PRIVILEGES;
