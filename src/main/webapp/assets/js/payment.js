@@ -42,7 +42,7 @@ function initializeTicketHolders() {
     if (!ticketHolderSection) return;
 
     const seats = bookingInfo.seats;
-    const pricePerTicket = 12.00;
+    const pricePerTicket = parseFloat(document.getElementById('price-per-ticket').textContent.replace('€', ''));
 
     function createTicketHolder(index) {
         const ticketId = `ticket-${index}`;
@@ -123,6 +123,13 @@ function initializeTicketHolders() {
     });
 }
 
+function generateTicketNumber(seat) {
+    const date = new Date();
+    const dateStr = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+    const movieId = new URLSearchParams(window.location.search).get('movieId');
+    return `TKT-${dateStr}-R${seat.row}S${seat.seat}-${movieId}`;
+}
+
 // Collect ticket holder information
 function collectTicketHolderInfo() {
     const bookingInfo = getBookingInfo();
@@ -135,15 +142,19 @@ function collectTicketHolderInfo() {
         const element = ticketElements[i];
         const firstName = element.querySelector('.ticket-firstname').value.trim();
         const lastName = element.querySelector('.ticket-lastname').value.trim();
-        const ticketId = element.querySelector('.ticket-id').value;
+        const ticketNumber = generateTicketNumber(bookingInfo.seats[i]);
+        const price = parseFloat(document.getElementById('price-per-ticket').textContent.replace('€', ''));
+        const showtime = bookingInfo.showTime
 
         if (!firstName || !lastName) return null;
 
         ticketHolders.push({
             seat: bookingInfo.seats[i],
+            showtime,
+            price,
             firstName,
             lastName,
-            ticketId
+            ticketNumber
         });
     }
     return ticketHolders;
@@ -303,27 +314,43 @@ document.addEventListener('DOMContentLoaded', () => {
             submitButton.disabled = true;
             submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verarbeitung...';
 
-            // Simulate payment processing
-            setTimeout(() => {
-                const bookingInfo = getBookingInfo();
-                if (bookingInfo && Object.keys(bookingInfo).length > 0) {
-                    // Store the booking info again to ensure it's available in confirmation page
-                    bookingInfo.ticketHolders = collectTicketHolderInfo();
-                    bookingInfo.movieId = new URLSearchParams(window.location.search).get('movieId');
-                    try {
-                        localStorage.setItem('bookingData', JSON.stringify(bookingInfo));
-                        window.location.href = 'confirmation.xhtml';
-                    } catch (error) {
-                        console.error('Error storing booking data:', error);
-                        alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
-                        submitButton.disabled = false;
-                        submitButton.textContent = originalText;
-                    }
-                } else {
-                    alert('Buchungsdaten nicht gefunden. Bitte beginnen Sie den Buchungsprozess erneut.');
-                    window.location.href = 'index.xhtml';
-                }
-            }, 1500);
+            // Process payment and save booking data
+            const bookingInfo = getBookingInfo();
+            if (bookingInfo && Object.keys(bookingInfo).length > 0) {
+                const ticketHolders = collectTicketHolderInfo();
+                const movieId = new URLSearchParams(window.location.search).get('movieId');
+                
+                // Collect billing information
+                const billingInfo = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    street: document.getElementById('street').value,
+                    houseNumber: document.getElementById('houseNumber').value,
+                    zipCode: document.getElementById('zipCode').value,
+                    city: document.getElementById('city').value,
+                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+                };
+
+                // Prepare data for server
+                const paymentData = {
+                    movieId: parseInt(movieId),
+                    total: parseFloat(bookingInfo.totalPrice),
+                    ticketHolders: JSON.stringify(ticketHolders),
+                    billingInfo: JSON.stringify(billingInfo)
+                };
+
+                document.getElementById('paymentForm:movieId').value = paymentData.movieId;
+                document.getElementById('paymentForm:total').value = paymentData.total;
+                document.getElementById('paymentForm:ticketHolders').value = paymentData.ticketHolders;
+                document.getElementById('paymentForm:billingInfo').value = paymentData.billingInfo;   
+                
+                // Submit the form
+                document.getElementById('paymentForm:submitButton').click();
+            } else {
+                alert('Buchungsdaten nicht gefunden. Bitte beginnen Sie den Buchungsprozess erneut.');
+                window.location.href = 'index.xhtml';
+            }
         }
     });
 

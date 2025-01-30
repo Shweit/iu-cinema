@@ -4,7 +4,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
-import java.util.List;
 
 @Data
 @Entity
@@ -43,6 +42,8 @@ public class Movie {
     private String genre;
 
     private float rating;
+
+    private float price;
 
     @ManyToOne
     @JoinColumn(name = "hallId", nullable = false)

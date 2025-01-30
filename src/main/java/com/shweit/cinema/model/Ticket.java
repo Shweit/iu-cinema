@@ -2,6 +2,8 @@ package com.shweit.cinema.model;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 import javax.persistence.*;
 
 @Data
@@ -23,6 +25,15 @@ public class Ticket {
 
     @Column(nullable = false)
     private String seatNumber;
+
+    @Column(nullable = false)
+    private String ticketNumber;
+
+    @Column(nullable = false)
+    private float price;
+
+    @Column(nullable = false)
+    private Date purchaseDate;
 
     @ManyToOne
     @JoinColumn(name = "movieId", nullable = false)

@@ -49,6 +49,7 @@ CREATE TABLE ticket (
     seatNumber VARCHAR(10) NOT NULL,
     price FLOAT NOT NULL,
     purchaseDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ticketNumber VARCHAR(100) NOT NULL,
     movieId INT NOT NULL,
     hallId INT NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movie(movieId) ON DELETE CASCADE,
