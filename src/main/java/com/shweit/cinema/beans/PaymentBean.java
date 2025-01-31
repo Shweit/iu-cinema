@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @ManagedBean
 @RequestScoped
@@ -102,12 +103,13 @@ public class PaymentBean {
                     ticket.setFirstName(holder.get("firstName").asText());
                     ticket.setLastName(holder.get("lastName").asText());
                     ticket.setShowtime(holder.get("showtime").asText());
-                    ticket.setSeatNumber(holder.get("seat").asText());
-                    ticket.setPrice(holder.get("price").asLong());
-                    ticket.setTicketNumber(generateTicketNumber());
-                    ticket.setPurchaseDate(new Date(System.currentTimeMillis()));
+                    ticket.setSeatNumber(formatSeatNumber(holder.get("seat")));
+                    ticket.setPrice((float) holder.get("price").asDouble());
+                    ticket.setTicketNumber(holder.get("ticketNumber").asText());
+                    ticket.setPurchaseDate(new Timestamp(System.currentTimeMillis()));
                     ticket.setHall(movie.getHall());
                     ticket.setMovie(movie);
+                    ticket.setBilling(billing);
 
                     session.save(ticket);
                 }
@@ -135,7 +137,9 @@ public class PaymentBean {
         }
     }
 
-    private String generateTicketNumber() {
-        return "TKT" + System.currentTimeMillis() + "-" + (int)(Math.random() * 1000);
+    private String formatSeatNumber(JsonNode seatNumber) {
+        int row = seatNumber.get("row").asInt();
+        int seat = seatNumber.get("seat").asInt();
+        return String.format("%02d:%02d", row, seat);
     }
 }

@@ -144,7 +144,7 @@ function collectTicketHolderInfo() {
         const lastName = element.querySelector('.ticket-lastname').value.trim();
         const ticketNumber = generateTicketNumber(bookingInfo.seats[i]);
         const price = parseFloat(document.getElementById('price-per-ticket').textContent.replace('€', ''));
-        const showtime = bookingInfo.showTime
+        const showtime = bookingInfo.showtime;
 
         if (!firstName || !lastName) return null;
 

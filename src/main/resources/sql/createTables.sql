@@ -52,6 +52,7 @@ CREATE TABLE ticket (
     ticketNumber VARCHAR(100) NOT NULL,
     movieId INT NOT NULL,
     hallId INT NOT NULL,
+    billingId INT NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movie(movieId) ON DELETE CASCADE,
     FOREIGN KEY (hallId) REFERENCES hall(hallId) ON DELETE CASCADE
 );
@@ -67,15 +68,6 @@ CREATE TABLE billing (
     city VARCHAR(100) NOT NULL,
     paymentInfo VARCHAR(50) NOT NULL,
     transactionDetails JSON
-);
-
--- Create junction table for billing and tickets (many-to-many relationship)
-CREATE TABLE billing_ticket (
-    billingId INT NOT NULL,
-    ticketId INT NOT NULL,
-    PRIMARY KEY (billingId, ticketId),
-    FOREIGN KEY (billingId) REFERENCES billing(billingId) ON DELETE CASCADE,
-    FOREIGN KEY (ticketId) REFERENCES ticket(ticketId) ON DELETE CASCADE
 );
 
 -- Create junction table for movies and halls (many-to-many relationship)

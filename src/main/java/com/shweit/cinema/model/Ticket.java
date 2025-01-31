@@ -3,6 +3,7 @@ package com.shweit.cinema.model;
 import lombok.Data;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.*;
 
@@ -33,7 +34,7 @@ public class Ticket {
     private float price;
 
     @Column(nullable = false)
-    private Date purchaseDate;
+    private Timestamp purchaseDate;
 
     @ManyToOne
     @JoinColumn(name = "movieId", nullable = false)
@@ -42,4 +43,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "hallId", nullable = false)
     private Hall hall;
+
+    @ManyToOne
+    @JoinColumn(name = "billingId", nullable = false)
+    private Billing billing;
 }
