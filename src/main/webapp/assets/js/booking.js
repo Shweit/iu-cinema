@@ -164,7 +164,7 @@ function fillAlreadyBookedSeats() {
         if (bookedSeats.length !== 0) {
             bookedSeats.forEach(seat => {
                 const [row, seatNumber] = seat.split(":");
-                const formattedSeatNumber = parseInt(row) * 10 + parseInt(seatNumber) // Example: 03:05 => 35
+                const formattedSeatNumber = parseInt(row) * 10 + parseInt(seatNumber) - 10; // Example: 03:05 => 25
 
                 const seatElem = document.querySelector(`[data-seat-number="${formattedSeatNumber}"]`)
 

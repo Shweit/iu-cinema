@@ -81,7 +81,7 @@ public class PaymentBean {
             billing.setZip(billingInfoNode.get("zipCode").asText());
             billing.setCity(billingInfoNode.get("city").asText());
             billing.setPaymentInfo(billingInfoNode.get("paymentMethod").asText());
-            billing.setTransactionDetails(mapper.writeValueAsString(billingInfoNode));
+            billing.setTransactionDetails(mapper.writeValueAsString(billingInfoNode.get("transactionDetails")));
 
             // Start Hibernate session
             Session session = HibernateUtil.getSessionFactory().openSession();

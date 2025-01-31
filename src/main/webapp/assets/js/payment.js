@@ -103,14 +103,6 @@ function initializeTicketHolders() {
     if (totalPrice) {
         totalPrice.textContent = `${(seats.length * pricePerTicket).toFixed(2)} €`;
     }
-
-    // Initialize Bootstrap accordions
-    const accordionElements = document.querySelectorAll('.accordion-collapse');
-    accordionElements.forEach(element => {
-        new bootstrap.Collapse(element, {
-            toggle: false
-        });
-    });
 }
 
 function generateTicketNumber(seat) {
@@ -267,6 +259,27 @@ function handlePaymentMethodChange(event) {
     }
 }
 
+function getTransactionDetails() {
+    const paymentMethodInputs = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const sepaFields = document.getElementById('sepaFields');
+    const creditCardFields = document.getElementById('creditCardFields');
+
+    if (paymentMethodInputs === 'sepa') {
+        return {
+            iban: sepaFields.querySelector('#iban').value,
+            bic: sepaFields.querySelector('#bic').value
+        };
+    } else if (paymentMethodInputs === 'creditCard') {
+        return {
+            cardNumber: creditCardFields.querySelector('#cardNumber').value,
+            expiryDate: creditCardFields.querySelector('#expiryDate').value,
+            cvv: creditCardFields.querySelector('#cvv').value
+        };
+    } else {
+        return {};
+    }
+}
+
 // Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeBookingInfo();
@@ -319,7 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     houseNumber: document.getElementById('houseNumber').value,
                     zipCode: document.getElementById('zipCode').value,
                     city: document.getElementById('city').value,
-                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                    transactionDetails: getTransactionDetails()
                 };
 
                 // Prepare data for server
