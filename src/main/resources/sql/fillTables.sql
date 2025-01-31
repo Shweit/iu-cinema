@@ -19,7 +19,7 @@ VALUES
 INSERT INTO movie (name, cover, `desc`, playtime, releaseDate, topCast, trailerUrl, director, genre, rating, hallId, broadcastingTimes, short_desc, price)
 VALUES
     ('Avengers: Endgame', 'https://www.movieposters.com/cdn/shop/products/e9ee9896b5f53928b73097566a48f4d0_b6e23fef-e1e3-47d4-9085-811b4481ebb0_480x.progressive.jpg', 'Nach Thanos vernichtender Niederlage müssen die verbliebenen Avengers alles riskieren, um ihre gefallenen Verbündeten zurückzuholen. In einem epischen Finale setzen sie alles daran, das Universum zu retten.', '03:02:00', '2019-04-26', '["Robert Downey Jr.", "Chris Evans"]', 'https://www.youtube.com/watch?v=TcMBFSGVi1c', 'Anthony Russo', '["Action", "Fantasy", "Superhelden Film", "Drama"]', 4.5, 1, '["10:00", "13:00", "18:30", "20:15"]', 'Die Avengers versuchen in einem letzten Versuch, die Auswirkungen von Thanos Handlungen rückgängig zu machen.', 12.99),
-    ('Inception', 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg', 'Dom Cobb ist ein Meister der Traummanipulation, der in die Unterbewusstsein seiner Ziele eindringt, um Informationen zu stehlen. Bei seinem letzten Auftrag muss er jedoch keine Idee stehlen, sondern eine pflanzen.', '02:28:00', '2010-07-16', '["Leonardo DiCaprio", "Joseph Gordon-Levitt"]', 'https://www.youtube.com/watch?v=YoHD9XEInc0', 'Christopher Nolan', '["Action", "Abenteuer", "Drama", "Thriller"]', 5, 2, '["09:00", "15:30", "18:00", "20:15"]', 'Ein Traumdieb bekommt den Auftrag, eine Idee in das Unterbewusstsein eines Menschen zu pflanzen.', 11.99),
+    ('Inception', 'https://www.movieposters.com/cdn/shop/files/inception.mpw.123395_9e0000d1-bc7f-400a-b488-15fa9e60a10c_480x.progressive.jpg', 'Dom Cobb ist ein Meister der Traummanipulation, der in die Unterbewusstsein seiner Ziele eindringt, um Informationen zu stehlen. Bei seinem letzten Auftrag muss er jedoch keine Idee stehlen, sondern eine pflanzen.', '02:28:00', '2010-07-16', '["Leonardo DiCaprio", "Joseph Gordon-Levitt"]', 'https://www.youtube.com/watch?v=YoHD9XEInc0', 'Christopher Nolan', '["Action", "Abenteuer", "Drama", "Thriller"]', 5, 2, '["09:00", "15:30", "18:00", "20:15"]', 'Ein Traumdieb bekommt den Auftrag, eine Idee in das Unterbewusstsein eines Menschen zu pflanzen.', 11.99),
     ('The Dark Knight', 'https://www.movieposters.com/cdn/shop/files/darkknight.building.24x36_20e90057-f673-4cc3-9ce7-7b0d3eeb7d83_480x.progressive.jpg', 'Batman muss sich seinem bisher gefährlichsten Gegner stellen: dem Joker, der Gotham City ins Chaos stürzt. Ein packender Kampf zwischen Ordnung und Anarchie beginnt.', '02:32:00', '2008-07-18', '["Christian Bale", "Heath Ledger"]', 'https://www.youtube.com/watch?v=EXeTwQWrcwY', 'Christopher Nolan', '["Action", "Thriller", "Mysteryfilm", "Superhelden Film"]', 4.5, 3, '["10:00", "13:00", "18:30", "20:15"]', 'Batman kämpft gegen den chaotischen Joker um die Seele von Gotham City.', 11.99);
 
 -- Insert sample data into tickets
@@ -153,10 +153,10 @@ VALUES
 -- Insert sample data into billing
 INSERT INTO billing (firstName, lastName, street, zip, houseNumber, city, paymentInfo, transactionDetails)
 VALUES
-    ('John', 'Doe', 'Main Street', '12345', '10', 'Metropolis', 'PayPal', '{"transactionId":"TXN123"}'),
-    ('Jane', 'Smith', 'Elm Street', '54321', '5', 'Gotham', 'SEPA', '{"transactionId":"TXN456"}'),
-    ('Alice', 'Johnson', 'Oak Avenue', '67890', '15', 'Star City', 'Credit Card', '{"transactionId":"TXN789"}'),
-    ('Bob', 'Brown', 'Pine Street', '11111', '20', 'Central City', 'PayPal', '{"transactionId":"TXN101"}');
+    ('John', 'Doe', 'Main Street', '12345', '10', 'Metropolis', 'paypal', '{}'),
+    ('Jane', 'Smith', 'Elm Street', '54321', '5', 'Gotham', 'sepa', '{"bic": "MALADE51SWP", "iban": "DE43542500100475296166"}'),
+    ('Alice', 'Johnson', 'Oak Avenue', '67890', '15', 'Star City', 'creditCard', '{"cvv": "988", "cardNumber": "5579428851851314", "expiryDate": "11/27"}'),
+    ('Bob', 'Brown', 'Pine Street', '11111', '20', 'Central City', 'paypal', '{}');
 
 -- Insert sample data into movie_hall
 INSERT INTO movie_hall (movieId, hallId)
