@@ -110,15 +110,15 @@
                     <div class="price-summary mt-4">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Preis pro Ticket:</span>
-                            <span id="pricePerTicket">€#{bookingBean.getMovie().price}</span>
+                            <span id="pricePerTicket">#{bookingBean.getMovie().price} €</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2 total-price">
                             <strong>Gesamtpreis:</strong>
-                            <strong id="totalPrice">€0.00</strong>
+                            <strong id="totalPrice">0.00 €</strong>
                         </div>
                     </div>
 
-                    <button id="bookButton" class="btn btn-primary w-100 mt-4" disabled="true">
+                    <button id="bookButton" class="btn btn-primary w-100 mt-4" disabled="">
                         Jetzt Buchen
                     </button>
                 </div>

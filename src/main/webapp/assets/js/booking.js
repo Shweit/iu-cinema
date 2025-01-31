@@ -124,7 +124,7 @@ function updateSelectedSeats() {
         seatSpan.textContent = `Reihe ${row}, Sitz ${seatInRow}`;
 
         const priceSpan = document.createElement('span');
-        priceSpan.textContent = `€${pricePerTicket.toFixed(2)}`;
+        priceSpan.textContent = `${pricePerTicket.toFixed(2)} €`;
 
         li.appendChild(seatSpan);
         li.appendChild(priceSpan);
@@ -132,7 +132,7 @@ function updateSelectedSeats() {
     });
 
     const totalPrice = selectedSeats.length * pricePerTicket;
-    totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
+    totalPriceElement.textContent = `${totalPrice.toFixed(2)} €`;
     bookButton.disabled = selectedSeats.length === 0;
 
     if (bookButton.disabled) {

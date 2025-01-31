@@ -24,7 +24,7 @@ function initializeBookingInfo() {
     ).join('');
 
     // Update total price
-    document.getElementById('totalPrice').textContent = `€${bookingInfo.totalPrice.toFixed(2)}`;
+    document.getElementById('totalPrice').textContent = `${bookingInfo.totalPrice.toFixed(2)} €`;
 }
 
 // Generate unique ticket ID
@@ -84,17 +84,7 @@ function initializeTicketHolders() {
             const isComplete = firstNameInput.value.trim() !== '' && lastNameInput.value.trim() !== '';
             statusSpan.textContent = isComplete ? 'Vollständig' : 'Unvollständig';
             statusSpan.className = `ticket-status ms-2 ${isComplete ? 'text-success opacity-75' : 'opacity-75'}`;
-
-            if (isComplete) {
-                const bsCollapse = new bootstrap.Collapse(accordionCollapse, {
-                    toggle: false
-                });
-                bsCollapse.hide();
-            }
         }
-
-        firstNameInput.addEventListener('blur', checkCompletion);
-        lastNameInput.addEventListener('blur', checkCompletion);
 
         // Keep input event for real-time status updates
         firstNameInput.addEventListener('input', checkCompletion);
@@ -111,7 +101,7 @@ function initializeTicketHolders() {
     // Update total price
     const totalPrice = document.getElementById('totalPrice');
     if (totalPrice) {
-        totalPrice.textContent = `€${(seats.length * pricePerTicket).toFixed(2)}`;
+        totalPrice.textContent = `${(seats.length * pricePerTicket).toFixed(2)} €`;
     }
 
     // Initialize Bootstrap accordions
