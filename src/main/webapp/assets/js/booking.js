@@ -59,10 +59,6 @@ function generateSeats() {
 function handleSeatSelection() {
     const container = document.getElementById('seatsContainer');
     const quantitySpan = document.getElementById('ticketQuantity');
-    const selectedSeatsList = document.getElementById('selectedSeatsList');
-    const totalPriceElement = document.getElementById('totalPrice');
-    const bookButton = document.getElementById('bookButton');
-    const pricePerTicket = 12; // €12 per ticket
 
     container.addEventListener('click', (e) => {
         if (!e.target.classList.contains('seat')) return;
@@ -109,7 +105,7 @@ function updateSelectedSeats() {
     const selectedSeatsList = document.getElementById('selectedSeatsList');
     const totalPriceElement = document.getElementById('totalPrice');
     const bookButton = document.getElementById('bookButton');
-    const pricePerTicket = 12; // €12 per ticket
+    const pricePerTicket = parseFloat(document.getElementById('pricePerTicket').textContent.replace('€', ''));
 
     const selectedSeats = container.querySelectorAll('.seat.selected');
     while (selectedSeatsList.firstChild) {
