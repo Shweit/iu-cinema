@@ -54,7 +54,8 @@ CREATE TABLE ticket (
     hallId INT NOT NULL,
     billingId INT NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movie(movieId) ON DELETE CASCADE,
-    FOREIGN KEY (hallId) REFERENCES hall(hallId) ON DELETE CASCADE
+    FOREIGN KEY (hallId) REFERENCES hall(hallId) ON DELETE CASCADE,
+    FOREIGN KEY (billingId) REFERENCES billing(billingId) ON DELETE CASCADE
 );
 
 -- Create table for billing
