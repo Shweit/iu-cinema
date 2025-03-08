@@ -1,5 +1,3 @@
-// No need to store movie data in JavaScript as it's now in HTML data attributes
-
 function showMovieDetails(cardElement) {
     const title = cardElement.querySelector('.card-title').textContent;
     const image = cardElement.querySelector('.card-img-top').src;
@@ -39,7 +37,6 @@ function showMovieDetails(cardElement) {
                     </div>
                     <div class="text-center mt-4">
                         <button class="btn btn-secondary me-2" onclick="playTrailer('${trailer}')"><i class="bi bi-play-circle"></i> Trailer</button>
-                        <button class="btn btn-primary" onclick="bookTickets(this.closest('.modal-content'))">Tickets Buchen</button>
                     </div>
                 </div>
             </div>
@@ -68,33 +65,61 @@ function generateStars(rating) {
 }
 
 function playTrailer(trailerUrl) {
-    if (trailerUrl === '#') {
-        alert('Trailer ist momentan nicht verfügbar.');
-        return;
+    try {
+        if (!trailerUrl || trailerUrl === '#') {
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'alert alert-warning';
+            errorMessage.textContent = 'Trailer ist momentan nicht verfügbar.';
+            
+            const modalBody = document.querySelector('.modal-body');
+            const existingAlert = modalBody.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            modalBody.insertBefore(errorMessage, modalBody.firstChild);
+            
+            setTimeout(() => errorMessage.remove(), 3000);
+            return;
+        }
+        window.open(trailerUrl, '_blank');
+    } catch (error) {
+        console.error('Error playing trailer:', error);
     }
-    window.open(trailerUrl, '_blank');
 }
 
 function bookTickets(element) {
-    const movieId = element.dataset.movieId;
-    const title = element.querySelector('.modal-title')?.textContent || 
-                 element.querySelector('.card-title')?.textContent;
-    const image = element.querySelector('.card-img-top').src;
-    const genre = element.querySelector('.badge').textContent;
-    const duration = element.querySelector('.duration').textContent;
+    try {
+        if (!element) {
+            console.error('Invalid element for booking');
+            return;
+        }
 
-    // Store movie details in localStorage
-    const movieDetails = {
-        movieId: movieId,
-        title: title,
-        image: image,
-        genre: genre,
-        duration: duration
-    };
-    localStorage.setItem('selectedMovie', JSON.stringify(movieDetails));
+        const movieId = element.dataset.movieId;
+        const title = element.querySelector('.modal-title')?.textContent || 
+                     element.querySelector('.card-title')?.textContent;
+        const image = element.querySelector('.card-img-top')?.src;
+        const genre = element.querySelector('.badge')?.textContent;
+        const duration = element.querySelector('.duration')?.textContent;
 
-    // Redirect with movieId as parameter
-    window.location.href = `booking.xhtml?movieId=${movieId}`;
+        // Store movie details in localStorage
+        const movieDetails = {
+            movieId: movieId,
+            title: title,
+            image: image,
+            genre: genre,
+            duration: duration
+        };
+        
+        try {
+            localStorage.setItem('selectedMovie', JSON.stringify(movieDetails));
+            window.location.href = `booking.xhtml?movieId=${movieId}`;
+        } catch (storageError) {
+            console.error('Failed to store movie details:', storageError);
+            window.location.href = `booking.xhtml?movieId=${movieId}`;
+        }
+    } catch (error) {
+        console.error('Error during booking:', error);
+    }
 }
     
 // Close the modal if it's open

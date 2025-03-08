@@ -1,86 +1,137 @@
-// Initialize ticket quantity controls
+// Constants for configuration
+const MAX_TICKETS = 5;
+const MIN_TICKETS = 1;
+
+// Initialize ticket quantity controls with error handling
 function initializeTicketQuantity() {
     const decreaseBtn = document.getElementById('decreaseTickets');
     const increaseBtn = document.getElementById('increaseTickets');
     const quantitySpan = document.getElementById('ticketQuantity');
-    let currentQuantity = 1;
+    let currentQuantity = MIN_TICKETS;
 
-    decreaseBtn.addEventListener('click', () => {
-        if (currentQuantity > 1) {
-            currentQuantity--;
+    if (!decreaseBtn || !increaseBtn || !quantitySpan) {
+        console.error('Required ticket quantity elements not found');
+        return;
+    }
+
+    const updateQuantity = (newQuantity) => {
+        if (newQuantity >= MIN_TICKETS && newQuantity <= MAX_TICKETS) {
+            currentQuantity = newQuantity;
             quantitySpan.textContent = currentQuantity;
             updateSeatSelection();
         }
-    });
+    };
 
-    increaseBtn.addEventListener('click', () => {
-        if (currentQuantity < 5) {
-            currentQuantity++;
-            quantitySpan.textContent = currentQuantity;
-            updateSeatSelection();
-        }
-    });
+    decreaseBtn.addEventListener('click', () => updateQuantity(currentQuantity - 1));
+    increaseBtn.addEventListener('click', () => updateQuantity(currentQuantity + 1));
 }
 
-// Generate seats grid with row numbers
+// Generate seats grid with row numbers and error handling
 function generateSeats() {
-    const container = document.getElementById('seatsContainer');
+    try {
+        const container = document.getElementById('seatsContainer');
+        const seatPlacementElement = document.getElementById('hall:seatPlacement');
 
-    const seatPlacement = document.getElementById('hall:seatPlacement').value;
-    const dict = JSON.parse(seatPlacement);
-    const rows = dict['rows']
-    const seatsPerRow = dict['columns']
-
-    // Generate seats
-    for (let row = 0; row < rows; row++) {
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'seat-row';
-
-        // Add row number
-        const rowNumber = document.createElement('div');
-        rowNumber.className = 'row-number';
-        rowNumber.textContent = row + 1;
-        rowDiv.appendChild(rowNumber);
-
-        for (let seat = 0; seat < seatsPerRow; seat++) {
-            const seatNumber = row * seatsPerRow + seat + 1;
-            const seatElement = document.createElement('div');
-            seatElement.className = 'seat available';
-            seatElement.dataset.seatNumber = seatNumber;
-            seatElement.title = `Reihe ${row + 1}, Sitz ${seat + 1}`;
-            rowDiv.appendChild(seatElement);
+        if (!container || !seatPlacementElement) {
+            throw new Error('Required seat container elements not found');
         }
 
-        container.appendChild(rowDiv);
+        const seatPlacement = seatPlacementElement.value;
+        const dict = JSON.parse(seatPlacement);
+        const rows = dict['rows'];
+        const seatsPerRow = dict['columns'];
+
+        if (!rows || !seatsPerRow) {
+            throw new Error('Invalid seat placement configuration');
+        }
+
+        // Create document fragment for better performance
+        const fragment = document.createDocumentFragment();
+
+        // Generate seats
+        for (let row = 0; row < rows; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'seat-row';
+
+            // Add row number
+            const rowNumber = document.createElement('div');
+            rowNumber.className = 'row-number';
+            rowNumber.textContent = row + 1;
+            rowDiv.appendChild(rowNumber);
+
+            for (let seat = 0; seat < seatsPerRow; seat++) {
+                const seatNumber = row * seatsPerRow + seat + 1;
+                const seatElement = document.createElement('div');
+                seatElement.className = 'seat available';
+                seatElement.dataset.seatNumber = seatNumber;
+                seatElement.dataset.row = row + 1;
+                seatElement.dataset.seat = seat + 1;
+                seatElement.title = `Reihe ${row + 1}, Sitz ${seat + 1}`;
+                rowDiv.appendChild(seatElement);
+            }
+
+            fragment.appendChild(rowDiv);
+        }
+
+        container.appendChild(fragment);
+    } catch (error) {
+        console.error('Error generating seats:', error);
+        const container = document.getElementById('seatsContainer');
+        if (container) {
+            container.innerHTML = '<div class="alert alert-danger">Fehler beim Laden der Sitzplätze</div>';
+        }
     }
 }
 
-// Handle seat selection
+// Handle seat selection with improved error handling and animations
 function handleSeatSelection() {
     const container = document.getElementById('seatsContainer');
     const quantitySpan = document.getElementById('ticketQuantity');
 
+    if (!container || !quantitySpan) {
+        console.error('Required seat selection elements not found');
+        return;
+    }
+
+    const addTemporaryClass = (element, className, duration = 500) => {
+        element.classList.add(className);
+        setTimeout(() => element.classList.remove(className), duration);
+    };
+
+    const showError = (message) => {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-warning fade-in';
+        errorDiv.style.position = 'fixed';
+        errorDiv.style.top = '20px';
+        errorDiv.style.left = '50%';
+        errorDiv.style.transform = 'translateX(-50%)';
+        errorDiv.style.zIndex = '1000';
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        setTimeout(() => errorDiv.remove(), 3000);
+    };
+
     container.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('seat')) return;
-        if (e.target.classList.contains('occupied')) {
-            e.target.classList.add('shake');
-            setTimeout(() => e.target.classList.remove('shake'), 500);
+        const seat = e.target;
+        if (!seat.classList.contains('seat')) return;
+
+        if (seat.classList.contains('occupied')) {
+            addTemporaryClass(seat, 'shake');
+            showError('Dieser Sitzplatz ist bereits belegt');
             return;
         }
 
         const maxSeats = parseInt(quantitySpan.textContent);
         const currentSelected = container.querySelectorAll('.seat.selected').length;
 
-        if (!e.target.classList.contains('selected') && currentSelected >= maxSeats) {
-            alert(`Sie können nur ${maxSeats} Sitzplätze auswählen.`);
-            e.target.classList.add('shake');
-            setTimeout(() => e.target.classList.remove('shake'), 500);
+        if (!seat.classList.contains('selected') && currentSelected >= maxSeats) {
+            addTemporaryClass(seat, 'shake');
+            showError(`Sie können nur ${maxSeats} Sitzplätze auswählen`);
             return;
         }
 
-        e.target.classList.toggle('selected');
-        e.target.classList.add('pulse');
-        setTimeout(() => e.target.classList.remove('pulse'), 500);
+        seat.classList.toggle('selected');
+        addTemporaryClass(seat, 'pulse');
         updateSelectedSeats();
     });
 }
@@ -99,6 +150,7 @@ function updateSeatSelection() {
     updateSelectedSeats();
 }
 
+// Make updateSelectedSeats globally accessible
 // Make updateSelectedSeats globally accessible
 function updateSelectedSeats() {
     const container = document.getElementById('seatsContainer');
