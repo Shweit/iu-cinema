@@ -227,7 +227,6 @@ function formatCardNumber(input) {
     const value = input.value.replace(/\s/g, '');
     input.value = value.replace(/(.{4})/g, '$1 ').trim();
 }
-
 // Handle payment method selection
 function handlePaymentMethodChange() {
     // Get the selected value from the JSF selectOneRadio component
@@ -266,7 +265,6 @@ function handlePaymentMethodChange() {
         document.getElementById('billingForm:cvv').required = false;
     }
 }
-
 function getTransactionDetails() {
     const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
     const paymentMethod = paymentMethodSelect.value;
@@ -312,14 +310,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
     // Handle payment method changes
-    const paymentMethodSelect = document.querySelector('[name="billingForm:paymentMethod"]:checked');
-    if (paymentMethodSelect) {
-        paymentMethodSelect.addEventListener('change', handlePaymentMethodChange);
-        // Initialize payment fields based on default selection
-        handlePaymentMethodChange();
-    }
+    const paymentMethodInputs = document.querySelectorAll('[name="billingForm:paymentMethod"]');
+    paymentMethodInputs.forEach(input => {
+        input.addEventListener('change', handlePaymentMethodChange);
+    });
+    // Initialize payment fields based on default selection
+    handlePaymentMethodChange();
 
     // Add payment form submit handler
     form.addEventListener('submit', (e) => {

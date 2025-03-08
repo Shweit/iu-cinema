@@ -14,14 +14,14 @@ public class PaymentPostalCodeValidator implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (value == null) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Postal code is required.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "Die Postleitzahl ist ein Pflichtfeld.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
         
         String postalCode = value.toString().trim();
         if (!postalCode.matches(POSTAL_CODE_PATTERN)) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Please enter a valid 5-digit postal code.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "Bitte geben Sie eine gültige 5-stellige Postleitzahl ein.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

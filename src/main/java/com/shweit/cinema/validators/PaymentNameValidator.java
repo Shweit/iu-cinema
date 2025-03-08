@@ -12,14 +12,14 @@ public class PaymentNameValidator implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (value == null || !value.toString().matches("^[A-Za-zäöüÄÖÜß\\s-]+$")) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Name must contain only letters, spaces, and hyphens.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "Der Name darf nur Buchstaben, Leerzeichen und Bindestriche enthalten.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
         
         String name = value.toString().trim();
         if (name.length() < 2 || name.length() > 50) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Name must be between 2 and 50 characters.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "Der Name muss zwischen 2 und 50 Zeichen lang sein.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

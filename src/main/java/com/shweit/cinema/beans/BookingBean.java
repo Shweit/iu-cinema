@@ -37,10 +37,14 @@ public class BookingBean implements Serializable {
             try {
                 this.movieId = Integer.parseInt(movieIdParam);
             } catch (NumberFormatException e) {
-                // Handle invalid movieId
                 System.err.println("Invalid movieId: " + movieIdParam);
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
+        } 
     }
     
     public List<String> getMovieShowtimes() {

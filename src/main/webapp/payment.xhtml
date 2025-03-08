@@ -5,195 +5,212 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zahlung - IU Cinema</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="../assets/css/styles.css" rel="stylesheet" />
-    <link href="../assets/css/booking-styles.css" rel="stylesheet" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Zahlung - IU Cinema</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="../assets/css/styles.css" rel="stylesheet" />
+        <link href="../assets/css/booking-styles.css" rel="stylesheet" />
 
-    <f:metadata>
-        <f:viewParam name="movieId" value="#{paymentBean.movieId}" />
-    </f:metadata>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="index.xhtml">IU Cinema</a>
-    </div>
-</nav>
+        <f:metadata>
+            <f:viewParam name="movieId" value="#{paymentBean.movieId}" />
+        </f:metadata>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.xhtml">IU Cinema</a>
+            </div>
+        </nav>
 
-<div class="container mt-4 mt-lg-5">
-    <div class="row g-4">
-        <!-- Left Column - Payment Section -->
-        <div class="col-12 col-lg-8">
-            <div class="booking-section">
-                <h2 class="mb-3 mb-lg-4">Zahlung</h2>
+        <div class="container mt-4 mt-lg-5">
+            <div class="row g-4">
+                <!-- Left Column - Payment Section -->
+                <div class="col-12 col-lg-8">
+                    <div class="booking-section">
+                        <h2 class="mb-3 mb-lg-4">Zahlung</h2>
 
-                <!-- Billing Address Form -->
-                <h:form id="billingForm" class="mb-4">
-                    <h3 class="mb-3">Rechnungsadresse</h3>
-                    <div class="row g-3">
-                        <div class="col-12 col-sm-6">
-                            <label for="billingForm:firstName" class="form-label">Vorname</label>
-                            <h:inputText id="firstName" value="#{paymentBean.firstName}" styleClass="form-control" required="true">
-                                <f:validator validatorId="paymentNameValidator"/>
-                            </h:inputText>
-                            <h:message for="firstName" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label for="billingForm:lastName" class="form-label">Nachname</label>
-                            <h:inputText id="lastName" value="#{paymentBean.lastName}" styleClass="form-control" required="true">
-                                <f:validator validatorId="paymentNameValidator"/>
-                            </h:inputText>
-                            <h:message for="lastName" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <label for="billingForm:email" class="form-label">E-Mail</label>
-                        <h:inputText id="email" value="#{paymentBean.email}" styleClass="form-control" required="true">
-                            <f:validator validatorId="paymentEmailValidator"/>
-                        </h:inputText>
-                        <h:message for="email" style="color:red; display:block; margin-top:5px;" />
-                    </div>
-
-                    <div class="mt-3">
-                        <label for="billingForm:street" class="form-label">Straße und Hausnummer</label>
-                        <div class="row">
-                            <div class="col-10">
-                                <h:inputText id="street" value="#{paymentBean.street}" styleClass="form-control" required="true" />
-                                <h:message for="street" style="color:red; display:block; margin-top:5px;" />
+                        <!-- Billing Address Form -->
+                        <h:form id="billingForm" class="mb-4">
+                            <h3 class="mb-3">Rechnungsadresse</h3>
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <label for="billingForm:firstName" class="form-label">Vorname</label>
+                                    <h:inputText id="firstName" value="#{paymentBean.firstName}" styleClass="form-control" required="true">
+                                        <f:validator validatorId="paymentNameValidator"/>
+                                    </h:inputText>
+                                    <h:message for="firstName" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label for="billingForm:lastName" class="form-label">Nachname</label>
+                                    <h:inputText id="lastName" value="#{paymentBean.lastName}" styleClass="form-control" required="true">
+                                        <f:validator validatorId="paymentNameValidator"/>
+                                    </h:inputText>
+                                    <h:message for="lastName" style="color:red; display:block; margin-top:5px;" />
+                                </div>
                             </div>
-                            <div class="col-2">
-                                <h:inputText id="houseNumber" value="#{paymentBean.houseNumber}" styleClass="form-control" required="true" />
-                                <h:message for="houseNumber" style="color:red; display:block; margin-top:5px;" />
+
+                            <div class="mt-3">
+                                <label for="billingForm:email" class="form-label">E-Mail</label>
+                                <h:inputText id="email" value="#{paymentBean.email}" styleClass="form-control" required="true">
+                                    <f:validator validatorId="paymentEmailValidator"/>
+                                </h:inputText>
+                                <h:message for="email" style="color:red; display:block; margin-top:5px;" />
+                            </div>
+
+                            <div class="mt-3">
+                                <label for="billingForm:street" class="form-label">Straße und Hausnummer</label>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h:inputText id="street" value="#{paymentBean.street}" styleClass="form-control" required="true">
+                                            <f:validator validatorId="paymentStreetValidator"/>
+                                        </h:inputText>
+                                        <h:message for="street" style="color:red; display:block; margin-top:5px;" />
+                                    </div>
+                                    <div class="col-2">
+                                        <h:inputText id="houseNumber" value="#{paymentBean.houseNumber}" styleClass="form-control" required="true">
+                                            <f:validator validatorId="paymentHouseNumberValidator"/>
+                                        </h:inputText>
+                                        <h:message for="houseNumber" style="color:red; display:block; margin-top:5px;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-1">
+                                <div class="col-12 col-sm-4">
+                                    <label for="billingForm:zipCode" class="form-label">PLZ</label>
+                                    <h:inputText id="zipCode" value="#{paymentBean.zipCode}" styleClass="form-control" required="true">
+                                        <f:validator validatorId="paymentPostalCodeValidator"/>
+                                    </h:inputText>
+                                    <h:message for="zipCode" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                                <div class="col-12 col-sm-8">
+                                    <label for="billingForm:city" class="form-label">Stadt</label>
+                                    <h:inputText id="city" value="#{paymentBean.city}" styleClass="form-control" required="true">
+                                        <f:validator validatorId="paymentCityValidator"/>
+                                    </h:inputText>
+                                    <h:message for="city" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                            </div>
+
+                            <!-- Ticket Holder Information -->
+                            <h3 class="mb-3 mt-4">Ticketinhaber</h3>
+                            <div id="ticketHolderSection" class="ticket-holders accordion">
+                                <!-- Dynamically added ticket holders will appear here -->
+                            </div>
+                            <h:inputHidden id="ticketHoldersData" value="#{paymentBean.ticketHoldersData}" />
+
+                            <!-- Payment Method Selection -->
+                            <h3 class="mb-3 mt-4">Zahlungsmethode</h3>
+                            <div class="payment-methods">
+                                <div class="form-check mb-3">
+                                    <h:selectOneRadio id="paymentMethod" value="#{paymentBean.paymentMethod}" layout="pageDirection" styleClass="payment-method-radio">
+                                        <f:selectItem itemValue="paypal" itemLabel="PayPal" />
+                                        <f:selectItem itemValue="sepa" itemLabel="SEPA-Lastschrift" />
+                                        <f:selectItem itemValue="creditCard" itemLabel="Kreditkarte" />
+                                    </h:selectOneRadio>
+                                </div>
+                            </div>
+
+                            <!-- SEPA Fields -->
+                            <div id="sepaFields" class="mt-3" style="display: none;">
+                                <h4>SEPA-Informationen</h4>
+                                <div class="mb-3">
+                                    <label for="billingForm:iban" class="form-label">IBAN</label>
+                                    <h:inputText id="iban" value="#{paymentBean.iban}" styleClass="form-control" placeholder="DE00 1234 1234 1234 1234 00">
+                                        <f:validator validatorId="paymentIBANValidator"/>
+                                    </h:inputText>
+                                    <h:message for="iban" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="billingForm:bic" class="form-label">BIC</label>
+                                    <h:inputText id="bic" value="#{paymentBean.bic}" styleClass="form-control" placeholder="GENODE00XXX">
+                                        <f:validator validatorId="paymentBICValidator"/>
+                                    </h:inputText>
+                                    <h:message for="bic" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                            </div>
+
+                            <!-- Credit Card Fields -->
+                            <div id="creditCardFields" class="mt-3" style="display: none;">
+                                <h4>Kreditkarteninformationen</h4>
+                                <div class="mb-3">
+                                    <label for="billingForm:cardNumber" class="form-label">Kartennummer</label>
+                                    <h:inputText id="cardNumber" value="#{paymentBean.cardNumber}" styleClass="form-control" placeholder="1234 5678 9012 3456">
+                                        <f:validator validatorId="paymentCardNumberValidator"/>
+                                    </h:inputText>
+                                    <h:message for="cardNumber" style="color:red; display:block; margin-top:5px;" />
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <label for="billingForm:expiryDate" class="form-label">Ablaufdatum</label>
+                                        <h:inputText id="expiryDate" value="#{paymentBean.expiryDate}" styleClass="form-control" placeholder="MM/JJ">
+                                            <f:validator validatorId="paymentExpiryDateValidator"/>
+                                        </h:inputText>
+                                        <h:message for="expiryDate" style="color:red; display:block; margin-top:5px;" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="billingForm:cvv" class="form-label">CVV</label>
+                                        <h:inputText id="cvv" value="#{paymentBean.cvv}" styleClass="form-control" placeholder="123">
+                                            <f:validator validatorId="paymentCVVValidator"/>
+                                        </h:inputText>
+                                        <h:message for="cvv" style="color:red; display:block; margin-top:5px;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden form fields for movie ID and total -->
+                            <h:inputHidden id="movieId" value="#{paymentBean.movieId}" />
+                            <h:inputHidden id="total" value="#{paymentBean.total}" />
+
+                            <input type="hidden" name="movieId" value="#{param['movieId']}" />
+                            <!-- Submit button -->
+                            <h:commandButton value="Jetzt Bezahlen" action="#{paymentBean.submit}" styleClass="btn btn-primary w-100 mt-4" />
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- Right Column - Booking Summary -->
+                <div class="col-lg-4">
+                    <div class="booking-summary">
+                        <h3>Buchungsübersicht</h3>
+                        <div class="movie-info-booking">
+                            <img id="movieImage" src="#{bookingBean.getMovie().cover}" alt="Movie Poster" class="img-fluid rounded mb-3" />
+                            <h4 id="movieTitle">#{bookingBean.getMovie().name}</h4>
+                            <p id="movieDetails" style="color: #cccccc">#{bookingBean.getMovie().shortDesc}</p>
+                            <div class="movie-info">
+                                <ui:repeat var="genre" value="#{movieBean.getGenres(bookingBean.getMovie())}">
+                                    <span class="badge bg-info">#{genre}</span>
+                                </ui:repeat>
+                                <span class="duration">#{bookingBean.getMovie().playtime} Spielzeit</span>
+                            </div>
+                        </div>
+
+                        <div class="selected-seats-info mt-4">
+                            <h5>Ausgewählte Sitze</h5>
+                            <ul id="selectedSeatsList" class="list-unstyled">
+                                <!-- Selected seats will be listed here -->
+                            </ul>
+                        </div>
+
+                        <div class="price-summary mt-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Preis pro Ticket:</span>
+                                <span id="price-per-ticket">#{bookingBean.getMovie().price} €</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 total-price">
+                                <strong>Gesamtpreis:</strong>
+                                <strong id="totalPrice">0.00 €</strong>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row g-3 mt-1">
-                        <div class="col-12 col-sm-4">
-                            <label for="billingForm:zipCode" class="form-label">PLZ</label>
-                            <h:inputText id="zipCode" value="#{paymentBean.zipCode}" styleClass="form-control" required="true">
-                                <f:validator validatorId="paymentPostalCodeValidator"/>
-                            </h:inputText>
-                            <h:message for="zipCode" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                        <div class="col-12 col-sm-8">
-                            <label for="billingForm:city" class="form-label">Stadt</label>
-                            <h:inputText id="city" value="#{paymentBean.city}" styleClass="form-control" required="true" />
-                            <h:message for="city" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Ticket Holder Information -->
-                    <h3 class="mb-3 mt-4">Ticketinhaber</h3>
-                    <div id="ticketHolderSection" class="ticket-holders accordion">
-                        <!-- Dynamically added ticket holders will appear here -->
-                    </div>
-                    <h:inputHidden id="ticketHoldersData" value="#{paymentBean.ticketHoldersData}" />
-
-                    <!-- Payment Method Selection -->
-                    <h3 class="mb-3 mt-4">Zahlungsmethode</h3>
-                    <div class="payment-methods">
-                        <div class="form-check mb-3">
-                            <h:selectOneRadio id="paymentMethod" value="#{paymentBean.paymentMethod}" layout="pageDirection" styleClass="payment-method-radio">
-                                <f:selectItem itemValue="paypal" itemLabel="PayPal" />
-                                <f:selectItem itemValue="sepa" itemLabel="SEPA-Lastschrift" />
-                                <f:selectItem itemValue="creditCard" itemLabel="Kreditkarte" />
-                            </h:selectOneRadio>
-                        </div>
-                    </div>
-
-                    <!-- SEPA Fields -->
-                    <div id="sepaFields" class="mt-3" style="display: none;">
-                        <h4>SEPA-Informationen</h4>
-                        <div class="mb-3">
-                            <label for="billingForm:iban" class="form-label">IBAN</label>
-                            <h:inputText id="iban" value="#{paymentBean.iban}" styleClass="form-control" placeholder="DE00 1234 1234 1234 1234 00" />
-                            <h:message for="iban" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="billingForm:bic" class="form-label">BIC</label>
-                            <h:inputText id="bic" value="#{paymentBean.bic}" styleClass="form-control" placeholder="GENODE00XXX" />
-                            <h:message for="bic" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                    </div>
-
-                    <!-- Credit Card Fields -->
-                    <div id="creditCardFields" class="mt-3" style="display: none;">
-                        <h4>Kreditkarteninformationen</h4>
-                        <div class="mb-3">
-                            <label for="billingForm:cardNumber" class="form-label">Kartennummer</label>
-                            <h:inputText id="cardNumber" value="#{paymentBean.cardNumber}" styleClass="form-control" placeholder="1234 5678 9012 3456" />
-                            <h:message for="cardNumber" style="color:red; display:block; margin-top:5px;" />
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <label for="billingForm:expiryDate" class="form-label">Ablaufdatum</label>
-                                <h:inputText id="expiryDate" value="#{paymentBean.expiryDate}" styleClass="form-control" placeholder="MM/JJ" />
-                                <h:message for="expiryDate" style="color:red; display:block; margin-top:5px;" />
-                            </div>
-                            <div class="col-6">
-                                <label for="billingForm:cvv" class="form-label">CVV</label>
-                                <h:inputText id="cvv" value="#{paymentBean.cvv}" styleClass="form-control" placeholder="123" />
-                                <h:message for="cvv" style="color:red; display:block; margin-top:5px;" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hidden form fields for movie ID and total -->
-                    <h:inputHidden id="movieId" value="#{paymentBean.movieId}" />
-                    <h:inputHidden id="total" value="#{paymentBean.total}" />
-
-                    <!-- Submit button -->
-                    <h:commandButton value="Jetzt Bezahlen" action="#{paymentBean.submit}" styleClass="btn btn-primary w-100 mt-4" />
-                </h:form>
+                </div>
             </div>
         </div>
 
-        <!-- Right Column - Booking Summary -->
-        <div class="col-lg-4">
-            <div class="booking-summary">
-                <h3>Buchungsübersicht</h3>
-                <div class="movie-info-booking">
-                    <img id="movieImage" src="#{bookingBean.getMovie().cover}" alt="Movie Poster" class="img-fluid rounded mb-3" />
-                    <h4 id="movieTitle">#{bookingBean.getMovie().name}</h4>
-                    <p id="movieDetails" style="color: #cccccc">#{bookingBean.getMovie().shortDesc}</p>
-                    <div class="movie-info">
-                        <ui:repeat var="genre" value="#{movieBean.getGenres(bookingBean.getMovie())}">
-                            <span class="badge bg-info">#{genre}</span>
-                        </ui:repeat>
-                        <span class="duration">#{bookingBean.getMovie().playtime} Spielzeit</span>
-                    </div>
-                </div>
-
-                <div class="selected-seats-info mt-4">
-                    <h5>Ausgewählte Sitze</h5>
-                    <ul id="selectedSeatsList" class="list-unstyled">
-                        <!-- Selected seats will be listed here -->
-                    </ul>
-                </div>
-
-                <div class="price-summary mt-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Preis pro Ticket:</span>
-                        <span id="price-per-ticket">#{bookingBean.getMovie().price} €</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2 total-price">
-                        <strong>Gesamtpreis:</strong>
-                        <strong id="totalPrice">0.00 €</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/payment.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/payment.js"></script>
+    </body>
 </html>

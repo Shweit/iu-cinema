@@ -16,14 +16,14 @@ public class PaymentEmailValidator implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (value == null) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Email is required.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "E-Mail ist ein Pflichtfeld.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
         
         String email = value.toString().trim();
         if (!email.matches(EMAIL_PATTERN)) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Please enter a valid email address.");
+            FacesMessage msg = new FacesMessage("Validation failed.", "Bitte gib eine valide E-Mail an.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }
