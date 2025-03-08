@@ -55,11 +55,10 @@ public class BookingBean implements Serializable {
 
         ObjectMapper mapper = new ObjectMapper();
         try {
-            // JSON-String in eine Liste von Strings konvertieren
             return mapper.readValue(movie.getBroadcastingTimes(), new TypeReference<List<String>>() {});
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<>(); // Leere Liste bei Fehler zurückgeben
+            return new ArrayList<>();
         }
     }
 

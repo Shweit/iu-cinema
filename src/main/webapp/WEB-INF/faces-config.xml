@@ -12,6 +12,11 @@
             <to-view-id>/confirm.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/payment.xhtml</to-view-id>
+            <redirect includeViewParams="true"/>
+        </navigation-case>
     </navigation-rule>
     
 </faces-config>

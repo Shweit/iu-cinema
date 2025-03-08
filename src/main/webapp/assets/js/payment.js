@@ -231,7 +231,7 @@ function formatCardNumber(input) {
 // Handle payment method selection
 function handlePaymentMethodChange() {
     // Get the selected value from the JSF selectOneRadio component
-    const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
+    const paymentMethodSelect = document.querySelector('[name="billingForm:paymentMethod"]:checked');
     const paymentMethod = paymentMethodSelect.value;
     
     const sepaFields = document.getElementById('sepaFields');
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle payment method changes
-    const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
+    const paymentMethodSelect = document.querySelector('[name="billingForm:paymentMethod"]:checked');
     if (paymentMethodSelect) {
         paymentMethodSelect.addEventListener('change', handlePaymentMethodChange);
         // Initialize payment fields based on default selection
@@ -323,53 +323,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add payment form submit handler
     form.addEventListener('submit', (e) => {
-        e.preventDefault();
 
-        if (validateForm()) {
-            // Show loading state
-            const submitButton = form.querySelector('input[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verarbeitung...';
-
-            // Process payment and save booking data
-            const bookingInfo = getBookingInfo();
-            if (bookingInfo && Object.keys(bookingInfo).length > 0) {
-                const ticketHolders = collectTicketHolderInfo();
-                const movieId = new URLSearchParams(window.location.search).get('movieId');
-                
-                // Collect billing information
-                const billingInfo = {
-                    firstName: document.getElementById('billingForm:firstName').value,
-                    lastName: document.getElementById('billingForm:lastName').value,
-                    email: document.getElementById('billingForm:email').value,
-                    street: document.getElementById('billingForm:street').value,
-                    houseNumber: document.getElementById('billingForm:houseNumber').value,
-                    zipCode: document.getElementById('billingForm:zipCode').value,
-                    city: document.getElementById('billingForm:city').value,
-                    paymentMethod: document.getElementById('billingForm:paymentMethod').value,
-                    transactionDetails: getTransactionDetails()
-                };
-
-                // Prepare data for server
-                const paymentData = {
-                    movieId: parseInt(movieId),
-                    total: parseFloat(bookingInfo.totalPrice),
-                    ticketHolders: JSON.stringify(ticketHolders),
-                    billingInfo: JSON.stringify(billingInfo)
-                };
-
-                document.getElementById('paymentForm:movieId').value = paymentData.movieId;
-                document.getElementById('paymentForm:total').value = paymentData.total;
-                document.getElementById('paymentForm:ticketHolders').value = paymentData.ticketHolders;
-                document.getElementById('paymentForm:billingInfo').value = paymentData.billingInfo;
-                
-                console.log(paymentData);
-                // Submit the form
-                document.getElementById('paymentForm:submitButton').click();
-            } else {
-                alert('Buchungsdaten nicht gefunden. Bitte beginnen Sie den Buchungsprozess erneut.');
-                window.location.href = 'index.xhtml';
-            }
+        // Validate ticket holder information
+        const ticketHolders = collectTicketHolderInfo();
+        if (!ticketHolders) {
+            alert('Bitte füllen Sie alle Ticketinhaber-Informationen aus.');
+            return false;
         }
+
+        // Get booking info
+        const bookingInfo = getBookingInfo();
+        if (!bookingInfo) {
+            alert('Buchungsinformationen nicht gefunden.');
+            return false;
+        }
+
+        try {
+            // Set the movie ID in the hidden field
+            const movieIdField = document.getElementById('billingForm:movieId');
+            if (movieIdField) {
+                const parsedData = JSON.parse(window.localStorage.getItem('selectedMovie'))
+                movieIdField.value = parsedData.movieId;
+            }
+
+            // Set the total price in the hidden field
+            const totalField = document.getElementById('billingForm:total');
+            if (totalField) {
+                totalField.value = parseFloat(bookingInfo.totalPrice);
+            }
+
+            // Set the ticket holders data in the hidden field
+            const ticketHoldersField = document.getElementById('billingForm:ticketHoldersData');
+            if (ticketHoldersField) {
+                ticketHoldersField.value = JSON.stringify(ticketHolders);
+            }
+        } catch (error) {
+            e.preventDefault();
+            console.error('Error preparing form submission:', error);
+            alert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+            return false;
+        }
+
+        console.log('Form submitted successfully!');
     });
 });
