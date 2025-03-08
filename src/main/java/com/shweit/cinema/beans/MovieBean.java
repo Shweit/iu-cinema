@@ -1,6 +1,6 @@
 package com.shweit.cinema.beans;
 
-import com.shweit.HibernateUtil;
+import com.shweit.cinema.HibernateUtil;
 import com.shweit.cinema.model.Movie;
 import java.io.IOException;
 import org.hibernate.Session;

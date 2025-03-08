@@ -142,7 +142,6 @@ function collectTicketHolderInfo() {
     return ticketHolders;
 }
 
-// Update validateForm function
 function validateForm() {
     const form = document.getElementById('billingForm');
     if (!form) return false;
@@ -230,50 +229,58 @@ function formatCardNumber(input) {
 }
 
 // Handle payment method selection
-function handlePaymentMethodChange(event) {
-    const paymentMethod = event.target.value;
+function handlePaymentMethodChange() {
+    // Get the selected value from the JSF selectOneRadio component
+    const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
+    const paymentMethod = paymentMethodSelect.value;
+    
     const sepaFields = document.getElementById('sepaFields');
     const creditCardFields = document.getElementById('creditCardFields');
-
-    const sepaInputs = sepaFields.querySelectorAll('input');
-    const creditCardInputs = creditCardFields.querySelectorAll('input');
 
     if (paymentMethod === 'sepa') {
         sepaFields.style.display = 'block';
         creditCardFields.style.display = 'none';
-
-        sepaInputs.forEach(input => input.required = true);
-        creditCardInputs.forEach(input => input.required = false);
+        
+        document.getElementById('billingForm:iban').required = true;
+        document.getElementById('billingForm:bic').required = true;
+        document.getElementById('billingForm:cardNumber').required = false;
+        document.getElementById('billingForm:expiryDate').required = false;
+        document.getElementById('billingForm:cvv').required = false;
     } else if (paymentMethod === 'creditCard') {
         creditCardFields.style.display = 'block';
         sepaFields.style.display = 'none';
-
-        creditCardInputs.forEach(input => input.required = true);
-        sepaInputs.forEach(input => input.required = false);
+        
+        document.getElementById('billingForm:iban').required = false;
+        document.getElementById('billingForm:bic').required = false;
+        document.getElementById('billingForm:cardNumber').required = true;
+        document.getElementById('billingForm:expiryDate').required = true;
+        document.getElementById('billingForm:cvv').required = true;
     } else {
         sepaFields.style.display = 'none';
         creditCardFields.style.display = 'none';
-
-        sepaInputs.forEach(input => input.required = false);
-        creditCardInputs.forEach(input => input.required = false);
+        
+        document.getElementById('billingForm:iban').required = false;
+        document.getElementById('billingForm:bic').required = false;
+        document.getElementById('billingForm:cardNumber').required = false;
+        document.getElementById('billingForm:expiryDate').required = false;
+        document.getElementById('billingForm:cvv').required = false;
     }
 }
 
 function getTransactionDetails() {
-    const paymentMethodInputs = document.querySelector('input[name="paymentMethod"]:checked').value;
-    const sepaFields = document.getElementById('sepaFields');
-    const creditCardFields = document.getElementById('creditCardFields');
+    const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
+    const paymentMethod = paymentMethodSelect.value;
 
-    if (paymentMethodInputs === 'sepa') {
+    if (paymentMethod === 'sepa') {
         return {
-            iban: sepaFields.querySelector('#iban').value,
-            bic: sepaFields.querySelector('#bic').value
+            iban: document.getElementById('billingForm:iban').value,
+            bic: document.getElementById('billingForm:bic').value
         };
-    } else if (paymentMethodInputs === 'creditCard') {
+    } else if (paymentMethod === 'creditCard') {
         return {
-            cardNumber: creditCardFields.querySelector('#cardNumber').value,
-            expiryDate: creditCardFields.querySelector('#expiryDate').value,
-            cvv: creditCardFields.querySelector('#cvv').value
+            cardNumber: document.getElementById('billingForm:cardNumber').value,
+            expiryDate: document.getElementById('billingForm:expiryDate').value,
+            cvv: document.getElementById('billingForm:cvv').value
         };
     } else {
         return {};
@@ -291,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inputs.forEach(input => {
         input.addEventListener('input', () => {
-            if (input.id === 'cardNumber') {
+            if (input.id === 'billingForm:cardNumber') {
                 formatCardNumber(input);
             }
             if (input.value.trim()) {
@@ -306,14 +313,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Handle payment method changes
+    const paymentMethodSelect = document.getElementById('billingForm:paymentMethod');
+    if (paymentMethodSelect) {
+        paymentMethodSelect.addEventListener('change', handlePaymentMethodChange);
+        // Initialize payment fields based on default selection
+        handlePaymentMethodChange();
+    }
+
     // Add payment form submit handler
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
         if (validateForm()) {
             // Show loading state
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
+            const submitButton = form.querySelector('input[type="submit"]');
             submitButton.disabled = true;
             submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verarbeitung...';
 
@@ -325,14 +339,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Collect billing information
                 const billingInfo = {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    street: document.getElementById('street').value,
-                    houseNumber: document.getElementById('houseNumber').value,
-                    zipCode: document.getElementById('zipCode').value,
-                    city: document.getElementById('city').value,
-                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                    firstName: document.getElementById('billingForm:firstName').value,
+                    lastName: document.getElementById('billingForm:lastName').value,
+                    email: document.getElementById('billingForm:email').value,
+                    street: document.getElementById('billingForm:street').value,
+                    houseNumber: document.getElementById('billingForm:houseNumber').value,
+                    zipCode: document.getElementById('billingForm:zipCode').value,
+                    city: document.getElementById('billingForm:city').value,
+                    paymentMethod: document.getElementById('billingForm:paymentMethod').value,
                     transactionDetails: getTransactionDetails()
                 };
 
@@ -347,8 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('paymentForm:movieId').value = paymentData.movieId;
                 document.getElementById('paymentForm:total').value = paymentData.total;
                 document.getElementById('paymentForm:ticketHolders').value = paymentData.ticketHolders;
-                document.getElementById('paymentForm:billingInfo').value = paymentData.billingInfo;   
+                document.getElementById('paymentForm:billingInfo').value = paymentData.billingInfo;
                 
+                console.log(paymentData);
                 // Submit the form
                 document.getElementById('paymentForm:submitButton').click();
             } else {
@@ -356,11 +371,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = 'index.xhtml';
             }
         }
-    });
-
-    // Handle payment method changes
-    const paymentMethodInputs = document.querySelectorAll('input[name="paymentMethod"]');
-    paymentMethodInputs.forEach(input => {
-        input.addEventListener('change', handlePaymentMethodChange);
     });
 });

@@ -2,7 +2,7 @@ package com.shweit.cinema.beans;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shweit.HibernateUtil;
+import com.shweit.cinema.HibernateUtil;
 import com.shweit.cinema.model.Billing;
 import com.shweit.cinema.model.Hall;
 import com.shweit.cinema.model.Movie;
@@ -72,6 +72,9 @@ public class PaymentBean {
             JsonNode ticketHoldersNode = mapper.readTree(ticketHolders);
             JsonNode billingInfoNode = mapper.readTree(billingInfo);
 
+            System.out.println("BILLING INFO: " + billingInfo);
+            System.out.println("TICKET HOLDER INFO" + ticketHolders);
+
             // Create Billing entity
             Billing billing = new Billing();
             billing.setFirstName(billingInfoNode.get("firstName").asText());
@@ -82,15 +85,15 @@ public class PaymentBean {
             billing.setCity(billingInfoNode.get("city").asText());
             billing.setPaymentInfo(billingInfoNode.get("paymentMethod").asText());
             billing.setTransactionDetails(mapper.writeValueAsString(billingInfoNode.get("transactionDetails")));
-
+            
             // Start Hibernate session
             Session session = HibernateUtil.getSessionFactory().openSession();
             Transaction transaction = session.beginTransaction();
+            
+            // Save billing information
+            session.save(billing);
 
             try {
-                // Save billing information
-                session.save(billing);
-
                 // Get movie reference
                 Movie movie = (Movie) session.get(Movie.class, movieId);
                 if (movie == null) {

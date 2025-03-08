@@ -1,4 +1,5 @@
 -- SQL script for inserting test data into the cinema database
+SET FOREIGN_KEY_CHECKS = 0; -- Temporarily disable foreign key checks to avoid dependency issues
 
 -- Insert sample data into halls
 INSERT INTO hall (name, totalSeats, totalRows, seatPlacement, specialSeats)
@@ -166,3 +167,5 @@ VALUES
     (3, 3),
     (1, 2),
     (3, 1);
+    
+SET FOREIGN_KEY_CHECKS = 1; -- Re-enable foreign key checks

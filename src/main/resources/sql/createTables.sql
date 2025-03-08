@@ -40,6 +40,20 @@ CREATE TABLE movie (
     FOREIGN KEY (hallId) REFERENCES hall(hallId) ON DELETE CASCADE
 );
 
+-- Create table for billing
+CREATE TABLE billing (
+    billingId INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    zip VARCHAR(10) NOT NULL,
+    houseNumber VARCHAR(10) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    paymentInfo VARCHAR(50) NOT NULL,
+    transactionDetails JSON
+);
+
+
 -- Create table for tickets
 CREATE TABLE ticket (
     ticketId INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,20 +71,6 @@ CREATE TABLE ticket (
     FOREIGN KEY (hallId) REFERENCES hall(hallId) ON DELETE CASCADE,
     FOREIGN KEY (billingId) REFERENCES billing(billingId) ON DELETE CASCADE
 );
-
--- Create table for billing
-CREATE TABLE billing (
-    billingId INT AUTO_INCREMENT PRIMARY KEY,
-    firstName VARCHAR(100) NOT NULL,
-    lastName VARCHAR(100) NOT NULL,
-    street VARCHAR(255) NOT NULL,
-    zip VARCHAR(10) NOT NULL,
-    houseNumber VARCHAR(10) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    paymentInfo VARCHAR(50) NOT NULL,
-    transactionDetails JSON
-);
-
 -- Create junction table for movies and halls (many-to-many relationship)
 CREATE TABLE movie_hall (
     movieId INT NOT NULL,
