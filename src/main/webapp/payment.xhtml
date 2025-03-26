@@ -119,14 +119,14 @@
                                 <h4>SEPA-Informationen</h4>
                                 <div class="mb-3">
                                     <label for="billingForm:iban" class="form-label">IBAN</label>
-                                    <h:inputText id="iban" value="#{paymentBean.iban}" styleClass="form-control" placeholder="DE00 1234 1234 1234 1234 00">
+                                    <h:inputText id="iban" value="#{paymentBean.iban}" styleClass="form-control">
                                         <f:validator validatorId="paymentIBANValidator"/>
                                     </h:inputText>
                                     <h:message for="iban" style="color:red; display:block; margin-top:5px;" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="billingForm:bic" class="form-label">BIC</label>
-                                    <h:inputText id="bic" value="#{paymentBean.bic}" styleClass="form-control" placeholder="GENODE00XXX">
+                                    <h:inputText id="bic" value="#{paymentBean.bic}" styleClass="form-control">
                                         <f:validator validatorId="paymentBICValidator"/>
                                     </h:inputText>
                                     <h:message for="bic" style="color:red; display:block; margin-top:5px;" />
@@ -138,7 +138,7 @@
                                 <h4>Kreditkarteninformationen</h4>
                                 <div class="mb-3">
                                     <label for="billingForm:cardNumber" class="form-label">Kartennummer</label>
-                                    <h:inputText id="cardNumber" value="#{paymentBean.cardNumber}" styleClass="form-control" placeholder="1234 5678 9012 3456">
+                                    <h:inputText id="cardNumber" value="#{paymentBean.cardNumber}" styleClass="form-control">
                                         <f:validator validatorId="paymentCardNumberValidator"/>
                                     </h:inputText>
                                     <h:message for="cardNumber" style="color:red; display:block; margin-top:5px;" />
@@ -146,14 +146,14 @@
                                 <div class="row g-3">
                                     <div class="col-6">
                                         <label for="billingForm:expiryDate" class="form-label">Ablaufdatum</label>
-                                        <h:inputText id="expiryDate" value="#{paymentBean.expiryDate}" styleClass="form-control" placeholder="MM/JJ">
+                                        <h:inputText id="expiryDate" value="#{paymentBean.expiryDate}" styleClass="form-control">
                                             <f:validator validatorId="paymentExpiryDateValidator"/>
                                         </h:inputText>
                                         <h:message for="expiryDate" style="color:red; display:block; margin-top:5px;" />
                                     </div>
                                     <div class="col-6">
                                         <label for="billingForm:cvv" class="form-label">CVV</label>
-                                        <h:inputText id="cvv" value="#{paymentBean.cvv}" styleClass="form-control" placeholder="123">
+                                        <h:inputText id="cvv" value="#{paymentBean.cvv}" styleClass="form-control">
                                             <f:validator validatorId="paymentCVVValidator"/>
                                         </h:inputText>
                                         <h:message for="cvv" style="color:red; display:block; margin-top:5px;" />

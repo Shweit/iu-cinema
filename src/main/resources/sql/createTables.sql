@@ -26,7 +26,7 @@ CREATE TABLE movie (
     name VARCHAR(255) NOT NULL,
     cover TEXT,
     short_desc TEXT,
-    `desc` TEXT,
+    description TEXT,
     playtime TIME,
     releaseDate DATE,
     broadcastingTimes JSON,

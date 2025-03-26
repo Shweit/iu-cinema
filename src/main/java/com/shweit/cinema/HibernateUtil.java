@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 public class HibernateUtil {
-    @Getter
     private static final SessionFactory sessionFactory;
 
     static {
@@ -17,5 +16,8 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
+    
+    public static SessionFactory getSessionFacotry() {
+        return sessionFactory;
+    }
 }

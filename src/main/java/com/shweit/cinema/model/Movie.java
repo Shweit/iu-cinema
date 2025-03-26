@@ -22,7 +22,7 @@ public class Movie {
     private String cover;
 
     @Column(columnDefinition = "TEXT")
-    private String desc;
+    private String description;
 
     private Time playtime;
 
