@@ -14,6 +14,8 @@ CREATE USER IF NOT EXISTS 'cinema'@'localhost' IDENTIFIED BY 'iu-cinema';
 GRANT ALL PRIVILEGES ON `102204056`.* TO 'cinema'@'localhost';
 FLUSH PRIVILEGES;
 
+USE `102204056`;
+
 -- SQL script for cinema database schema with drop statements
 
 -- Drop existing tables if they exist
