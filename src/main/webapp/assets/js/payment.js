@@ -134,6 +134,7 @@ function collectTicketHolderInfo() {
 
 // Handle payment method selection
 function handlePaymentMethodChange() {
+    console.log("Payment method changed");
     const paymentMethodSelect = document.querySelector('[name="billingForm:paymentMethod"]:checked');
     const paymentMethod = paymentMethodSelect.value;
     
@@ -144,22 +145,35 @@ function handlePaymentMethodChange() {
     sepaFields.style.display = 'none';
     creditCardFields.style.display = 'none';
     
-    document.getElementById('billingForm:iban').required = false;
-    document.getElementById('billingForm:bic').required = false;
-    document.getElementById('billingForm:cardNumber').required = false;
-    document.getElementById('billingForm:expiryDate').required = false;
-    document.getElementById('billingForm:cvv').required = false;
+    // Clear and set required attribute for SEPA fields
+    const ibanField = document.getElementById('billingForm:iban');
+    const bicField = document.getElementById('billingForm:bic');
+    ibanField.value = '';
+    bicField.value = '';
+    ibanField.required = false;
+    bicField.required = false;
+    
+    // Clear and set required attribute for credit card fields
+    const cardNumberField = document.getElementById('billingForm:cardNumber');
+    const expiryDateField = document.getElementById('billingForm:expiryDate');
+    const cvvField = document.getElementById('billingForm:cvv');
+    cardNumberField.value = '';
+    expiryDateField.value = '';
+    cvvField.value = '';
+    cardNumberField.required = false;
+    expiryDateField.required = false;
+    cvvField.required = false;
 
     // Show and require fields based on selected payment method
     if (paymentMethod === 'sepa') {
         sepaFields.style.display = 'block';
-        document.getElementById('billingForm:iban').required = true;
-        document.getElementById('billingForm:bic').required = true;
+        ibanField.required = true;
+        bicField.required = true;
     } else if (paymentMethod === 'creditCard') {
         creditCardFields.style.display = 'block';
-        document.getElementById('billingForm:cardNumber').required = true;
-        document.getElementById('billingForm:expiryDate').required = true;
-        document.getElementById('billingForm:cvv').required = true;
+        cardNumberField.required = true;
+        expiryDateField.required = true;
+        cvvField.required = true;
     }
 }
 
