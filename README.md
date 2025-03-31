@@ -28,8 +28,6 @@ The application was developed following the MVC pattern using **JavaServer Faces
 - Fully functional booking process with form submission and feedback
 - Simple but responsive user interface using Bootstrap
 
-## 📁 Project Structure
-
 
 ## 🖥️ How to Run
 
